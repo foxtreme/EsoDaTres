@@ -5,8 +5,10 @@
  */
 package proyectoia.front;
 
+import java.awt.Desktop;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -38,7 +40,6 @@ public class Front extends javax.swing.JFrame {
         cargarMundoJDialog = new javax.swing.JDialog();
         cargarRutaMundoJFC = new javax.swing.JFileChooser();
         panelLogo = new javax.swing.JPanel();
-        jSeparator1 = new javax.swing.JSeparator();
         labelLogo = new javax.swing.JLabel();
         panelContent = new javax.swing.JPanel();
         jTextFieldRutaMundo = new javax.swing.JTextField();
@@ -75,22 +76,28 @@ public class Front extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("UNIVALLE Smart Robot");
+        setBackground(new java.awt.Color(102, 102, 102));
         setMinimumSize(new java.awt.Dimension(600, 400));
+        setResizable(false);
+
+        labelLogo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyectoia/images/banner.png"))); // NOI18N
 
         javax.swing.GroupLayout panelLogoLayout = new javax.swing.GroupLayout(panelLogo);
         panelLogo.setLayout(panelLogoLayout);
         panelLogoLayout.setHorizontalGroup(
             panelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
-            .addComponent(labelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelLogo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelLogoLayout.setVerticalGroup(
             panelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLogoLayout.createSequentialGroup()
-                .addComponent(labelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(labelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(13, 13, 13))
         );
+
+        panelContent.setBackground(new java.awt.Color(102, 102, 102));
 
         jTextFieldRutaMundo.setEditable(false);
 
@@ -103,12 +110,15 @@ public class Front extends javax.swing.JFrame {
 
         editarMundoJButton.setText("Editar Mundo");
         editarMundoJButton.setEnabled(false);
+        editarMundoJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarMundoJButtonActionPerformed(evt);
+            }
+        });
 
         tipoBusquedaJLabel.setText("Tipo de Busqueda: ");
 
         busquedaJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "No Informada", "Informada" }));
-
-        algoritmosJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         ejecutarJButton.setText("Buscar");
         ejecutarJButton.setEnabled(false);
@@ -145,7 +155,7 @@ public class Front extends javax.swing.JFrame {
                                     .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)))))
                     .addGroup(panelContentLayout.createSequentialGroup()
                         .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldRutaMundo, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+                            .addComponent(jTextFieldRutaMundo)
                             .addGroup(panelContentLayout.createSequentialGroup()
                                 .addComponent(tipoBusquedaJLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -192,7 +202,7 @@ public class Front extends javax.swing.JFrame {
                         .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
-                        .addGap(0, 131, Short.MAX_VALUE)))
+                        .addGap(0, 163, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -206,9 +216,9 @@ public class Front extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -237,22 +247,28 @@ public class Front extends javax.swing.JFrame {
     }//GEN-LAST:event_cargarRutaMundoJFCActionPerformed
 
     private void cargarMundoJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarMundoJButtonActionPerformed
-        cargarMundoJDialog.setSize(623,397);
+        cargarMundoJDialog.setSize(62,360);
         cargarMundoJDialog.setLocationRelativeTo(null);
         cargarMundoJDialog.setVisible(true);
         cargarRutaMundoJFC.setVisible(true);
         
-        /**
-        File scripts = new File(System.getProperty("user.dir")+"/Scripts");
-                
-        if(scripts.exists()){
-            cargarRutaMundoJFC.setCurrentDirectory(scripts);  
-        }else{
-            scripts.mkdir();
-            cargarRutaMundoJFC.setCurrentDirectory(scripts);  
-        }    **/    
-        
+               
     }//GEN-LAST:event_cargarMundoJButtonActionPerformed
+
+    private void editarMundoJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarMundoJButtonActionPerformed
+        try
+            {
+                if(jTextFieldRutaMundo.getText().equals("")){
+                    JOptionPane.showMessageDialog(null, "No se ha especificado la ruta","Información",JOptionPane.INFORMATION_MESSAGE);
+                }else{
+                    Desktop.getDesktop().open(new File(jTextFieldRutaMundo.getText()));
+                }
+            }
+        catch(java.io.IOException e)
+            {
+                JOptionPane.showMessageDialog(null, "Error al Abrir el archivo del mundo","Información",JOptionPane.INFORMATION_MESSAGE);
+            }
+    }//GEN-LAST:event_editarMundoJButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -301,7 +317,6 @@ public class Front extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
