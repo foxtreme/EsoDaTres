@@ -14,11 +14,18 @@ import java.awt.Point;
 public class State {
 
     private Point position;
+    private int [][] maze;
     private int goalsAchieved;
     private int cost;//cost of getting to this state
 
     public State() {
         goalsAchieved=0;
+    }
+    
+    public State(Point position, int[][] maze, int goalsAchieved){
+        this.position = position;
+        this.maze = maze;
+        this.goalsAchieved = goalsAchieved;
     }
 
     public State(Point position, int goalsAchieved) {
@@ -42,7 +49,6 @@ public class State {
         this.position = position;
     }
     
-
     public void setCost(int cost) {
         this.cost = cost;
     }
@@ -50,6 +56,17 @@ public class State {
     public int getCost() {
         return cost;
     }
+
+    public int[][] getMaze() {
+        
+        return maze;
+    }
+
+    public void setMaze(int[][] maze) {
+        this.maze = maze;
+    }
     
-    
+    public void removeItem(Point item){
+        this.maze[item.x][item.y]=0;
+    }
 }

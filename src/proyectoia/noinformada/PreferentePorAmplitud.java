@@ -26,7 +26,7 @@ public class PreferentePorAmplitud {
      */
     public PreferentePorAmplitud(){
         environment = new Entorno();
-        environment.loadFile("Prueba4");
+        environment.loadFile("Prueba3");
         //initial State
         State initialState = environment.getInitialState();
         //root node - state, parent , operator , cost
@@ -51,9 +51,6 @@ public class PreferentePorAmplitud {
         if(neighbors[1]!=1){operators.add(8);}//up
         if(neighbors[2]!=1){operators.add(6);}//right
         if(neighbors[3]!=1){operators.add(5);}//down
-        for(int i=0;i<operators.size();i++){
-            System.out.println("operator: "+operators.get(i));
-        }
         return operators;
     }
     
@@ -65,11 +62,25 @@ public class PreferentePorAmplitud {
      * @return Node child of given father Node
      */
     public Node childNode(Node parent, int operator) {
-        System.out.println("metas del padre: "+parent.getState().getGoalsAchieved());
-        State state = parent.applyOperator(operator, environment, parent.getState());
+        //recover the status data of the parent
+        
+        int [][] maze = new int[environment.getSize()][environment.getSize()];
+        for(int i=0;i<environment.getSize();i++){
+            for(int j=0;j<environment.getSize();j++){
+                maze[i][j]=parent.getState().getMaze()[i][j];
+            }
+        }
+                
+        
+        Point positionParent = parent.getState().getPosition();
+        int goalsParent = parent.getState().getGoalsAchieved();
+        //gets the position for the next movement according to the operator
+        Point nextPos = parent.applyOperator(operator, environment, parent.getState());
+        //create the new state to asign
+        State state = new State(nextPos,maze,goalsParent);
+        //creates the child node with the calculated state        
         Node child = new Node(state, parent, operator, 1);
-        child.getState().setGoalsAchieved(parent.getState().getGoalsAchieved());
-        System.out.println("metas del hijo: "+child.getState().getGoalsAchieved());
+        
         return child;
     }
 
@@ -81,14 +92,15 @@ public class PreferentePorAmplitud {
         //if it is an item, increase the goals achieved
         if (value == 6) {
             node.getState().setGoalsAchieved(1);
-            node.setPositionValue(environment, 0);
-            environment.getOriginalEnv();
+            node.getState().removeItem(node.getState().getPosition());
+            System.out.println(node.getState().getMaze()[node.getState().getPosition().x][node.getState().getPosition().y]);
         }
         //check if this is a goal
         boolean goal = node.isItGoal(environment);
         if (goal) {
             solution = node;
         }
+        System.out.println("goals: "+node.getState().getGoalsAchieved());
         return goal;
     }
 
@@ -111,11 +123,10 @@ public class PreferentePorAmplitud {
                     for(int i=0; i<operators.size();i++){
                         Node child = childNode(node,operators.get(i));
                         Point q = child.getState().getPosition();
-                        System.out.println(q.x+", "+q.y);
                         frontier.add(child); 
                         
                     }
-                    System.out.println("cuantos nodos tiene frontier: "+frontier.size());
+                    //System.out.println("cuantos nodos tiene frontier: "+frontier.size());
                 }else{
                     List<Node> path = solution.getPathFromRoot();
                     for(int i=0;i<path.size();i++){
@@ -158,38 +169,46 @@ public class PreferentePorAmplitud {
         PreferentePorAmplitud ppa = new PreferentePorAmplitud();
         ppa.breadthFirst();
         /*
+        boolean b0,b1,b2,b3,b4,b5,b6,b7;
         Node n0 = ppa.getFrontier().firstElement();
-        Point p0 = n0.getState().getPosition();
-        System.out.println(p0.x+", "+p0.y);
-        boolean b0 = ppa.expand(n0);
-        System.out.println("meta?: "+b0);
-        System.out.println("cuantas metas?: "+n0.getState().getGoalsAchieved());
-        Vector <Integer> op0 = ppa.generateOperators(ppa.getEnvironment().getNeighbors(n0.getState()));
-        /////////////////////////////////
-        Node n1 = ppa.childNode(n0, op0.get(0));
-        Point p1 = n1.getState().getPosition();
-        System.out.println(p1.x+", "+p1.y);
-        boolean b1 = ppa.expand(n1);
-        System.out.println("meta?: "+b1);
-        System.out.println("cuantas metas?: "+n1.getState().getGoalsAchieved());
-        ///////////////////////////////////
+        b0 = ppa.expand(n0);
+        n0.printStateMaze();
         
-        Node n2 = ppa.childNode(n1, 4);       
-        Point p2 = n2.getState().getPosition();
-        System.out.println(p2.x+", "+p2.y);
-        boolean b2 = ppa.expand(n2);
-        System.out.println("cuantas metas?: "+n2.getState().getGoalsAchieved());
-        System.out.println("meta?: "+b2);
+        Node n1 = ppa.childNode(n0, 4);
+        b1 = ppa.expand(n1);
         
-        ppa.getEnvironment().getOriginalEnv();
-        Node n1 = ppa.childNode(ppa.root, 4);
-        Point q = n1.getState().getPosition();
-        System.out.println(q.x+", "+q.y);
-        System.out.println(p.x+", "+p.y);
-        Node n2 = ppa.childNode(ppa.root, 8);
-        Point r = n2.getState().getPosition();
-        System.out.println(r.x+", "+r.y);
-        System.out.println(p.x+", "+p.y);
+        n1.printStateMaze();
+        Node n2 = ppa.childNode(n1, 4);
+        b2 = ppa.expand(n2);
+        n2.printStateMaze();
+        n1.printStateMaze();
+        Node n3 = ppa.childNode(n2, 8);
+        b3 = ppa.expand(n3);
+        Node n4 = ppa.childNode(n3, 5);
+        b4 = ppa.expand(n4);
+        Node n5 = ppa.childNode(n3, 6);
+        b5 = ppa.expand(n5);
+        Node n6 = ppa.childNode(n5, 6);
+        b6 = ppa.expand(n6);
+        Node n7 = ppa.childNode(n6, 8);
+        b7 = ppa.expand(n7);
+        System.out.println(n0.getState().getPosition().toString());
+        System.out.println(n1.getState().getPosition().toString());
+        System.out.println(n2.getState().getPosition().toString());
+        System.out.println(n3.getState().getPosition().toString());
+        System.out.println(n4.getState().getPosition().toString());
+        System.out.println(n5.getState().getPosition().toString());
+        System.out.println(n6.getState().getPosition().toString());
+        System.out.println(n7.getState().getPosition().toString());
+            
+        System.out.println(n0.getState().getGoalsAchieved());
+        System.out.println(n1.getState().getGoalsAchieved());
+        System.out.println(n2.getState().getGoalsAchieved());
+        System.out.println(n3.getState().getGoalsAchieved());
+        System.out.println(n4.getState().getGoalsAchieved());
+        System.out.println(n5.getState().getGoalsAchieved());
+        System.out.println(n6.getState().getGoalsAchieved());
+        System.out.println(n7.getState().getGoalsAchieved());
         */
     }
     

@@ -21,6 +21,14 @@ public class Entorno {
     private int [] conventions;
     private int [] neighbors;
     private int size;
+
+    public int[] getConventions() {
+        return conventions;
+    }
+
+    public int getSize() {
+        return size;
+    }
     private int goalCount;
     private State initialState;
     
@@ -55,7 +63,6 @@ public class Entorno {
                         matrix[i][j] = input.nextInt();
                         originalEnv[i][j] = matrix[i][j];
                         if(originalEnv[i][j]==conventions[2]){
-                            System.out.println(i+" - "+j);
                             initialState.setPosition(new Point(i,j));
                             originalEnv[i][j]=conventions[0];
                             
@@ -63,20 +70,20 @@ public class Entorno {
                     }
                 }
             }
-            
+        initialState.setMaze(originalEnv);
             
         }catch (FileNotFoundException ex) {
             Logger.getLogger(Entorno.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for(int i= 0; i<size;i++){
+        /*for(int i= 0; i<size;i++){
             for(int j= 0; j<size;j++){
-                System.out.print(matrix[i][j]);
+                System.out.print(matrix[i][j]+" ");
             }
             System.out.println();
-        }
+        }*/
     }
     
-    public int[][] getMundo(File mundoFile){
+     public int[][] getMundo(File mundoFile){
         
         
         int matrix[][]=new int[size][size];
@@ -105,7 +112,6 @@ public class Entorno {
         }
         return matrix;
     }
-    
     
     /**
      * finds the position of the robot
@@ -215,12 +221,12 @@ public class Entorno {
      * @return the matrix with the original environment
      */
     public int [][] getOriginalEnv(){
-        for(int i = 0; i < size; ++i){
+        /*for(int i = 0; i < size; ++i){
             for(int j = 0; j < size; ++j){
                 System.out.print(" "+originalEnv[i][j]+" ");
             }
             System.out.println();
-        }
+        }*/
         return originalEnv;
     }
         
@@ -233,7 +239,6 @@ public class Entorno {
     }
 
     public State getInitialState() {
-        System.out.println("robot starts at: "+initialState.getPosition().toString());
         return initialState;
     }
       

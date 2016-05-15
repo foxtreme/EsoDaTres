@@ -47,7 +47,7 @@ public class Node {
             this.cost = parent.cost + cost;
             this.depth= parent.depth+ 1;
         }else{
-            this.cost = cost;
+            this.cost = this.cost+cost;
             this.depth = 0;
         }        
     }
@@ -57,23 +57,24 @@ public class Node {
      * @param operator int corresponding to each of the 4 directions
      * @param environment world of the robot
      */
-    public State applyOperator(int operator,Entorno environment,State state){
-        State nextState=new State();
+    public Point applyOperator(int operator,Entorno environment,State state){
+        //State nextState=new State();
+        Point movement=new Point();
         if(operator==4){
-            nextState=moveLeft(environment,state);
+            movement=moveLeft(environment,state);
         }
         if(operator==6){
-            nextState=moveRight(environment,state);
+            movement=moveRight(environment,state);
         }
         if(operator==8){
-            nextState=moveUp(environment,state);
+            movement=moveUp(environment,state);
         }
         if(operator==5){
-            nextState=moveDown(environment,state);
+            movement=moveDown(environment,state);
         }
         //ensures to keep track of the goals by the parent's state
         //nextState.setGoalsAchieved(state.getGoalsAchieved());
-        return nextState;
+        return movement;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
     }
     
@@ -81,57 +82,60 @@ public class Node {
      * Moves to the left
      * @param environment world of the robot
      */
-    private State moveLeft(Entorno environment,State state) {
+    private Point moveLeft(Entorno environment,State state) {
         int neighbors[]= new int[4];
+        Point movement = new Point();
         neighbors = environment.getNeighbors(state);
-        State nextState=new State();
+        //State nextState=new State();
         if(neighbors[0]!=1){
             Point robot = environment.findRobot(state);
             int row = (int) robot.getX();
             int col = ((int) robot.getY())-1;
-            Point movement = new Point(row,col);
-            nextState = environment.setRobotPosition(movement);
-            nextState.setCost(neighbors[0]);
+            movement.setLocation(row,col);
+            //nextState = environment.setRobotPosition(movement);
+            //nextState.setCost(neighbors[0]);
         }
-        return nextState;
+        return movement;
     }
     
     /**
      * Moves up 
      * @param environment world of the robot
      */
-    private State moveUp(Entorno environment,State state) {
+    private Point moveUp(Entorno environment,State state) {
         int neighbors[]= new int[4];
+        Point movement = new Point();
         neighbors = environment.getNeighbors(state);
-        State nextState=new State();
+        //State nextState=new State();
         if(neighbors[1]!=1){
             Point robot = environment.findRobot(state);
             int row = ((int) robot.getX())-1;
             int col = (int) robot.getY();
-            Point movement = new Point(row,col);
-            nextState = environment.setRobotPosition(movement);
-            nextState.setCost(neighbors[1]);
+            movement = new Point(row,col);
+            //nextState = environment.setRobotPosition(movement);
+            //nextState.setCost(neighbors[1]);
         }
-        return nextState;
+        return movement;
     }
 
     /**
      * Moves to the right
      * @param environment world of the robot
      */
-    private State moveRight(Entorno environment,State state) {
+    private Point moveRight(Entorno environment,State state) {
         int neighbors[]= new int[4];
+        Point movement = new Point();
         neighbors = environment.getNeighbors(state);
-        State nextState=new State();
+        //State nextState=new State();
         if(neighbors[2]!=1){
             Point robot = environment.findRobot(state);
             int row = (int) robot.getX();
             int col = ((int) robot.getY())+1;
-            Point movement = new Point(row,col);
-            nextState = environment.setRobotPosition(movement);
-            nextState.setCost(neighbors[2]);
+            movement = new Point(row,col);
+            //nextState = environment.setRobotPosition(movement);
+            //nextState.setCost(neighbors[2]);
         }
-        return nextState;
+        return movement;
     }
         
         
@@ -139,19 +143,20 @@ public class Node {
      * Moves down
      * @param environment world of the robot
      */
-    private State moveDown(Entorno environment,State state) {
+    private Point moveDown(Entorno environment,State state) {
         int neighbors[]= new int[4];
+        Point movement = new Point();
         neighbors = environment.getNeighbors(state);
-        State nextState=new State();
+        //State nextState=new State();
         if(neighbors[3]!=1){
             Point robot = environment.findRobot(state);
             int row = ((int) robot.getX())+1;
             int col = (int) robot.getY();
-            Point movement = new Point(row,col);
-            nextState = environment.setRobotPosition(movement);
-            nextState.setCost(neighbors[3]);
+            movement = new Point(row,col);
+            //nextState = environment.setRobotPosition(movement);
+            //nextState.setCost(neighbors[3]);
         }
-        return nextState;
+        return movement;
     }
     
     /**
@@ -198,15 +203,22 @@ public class Node {
      */
     public int getPositionValue(Entorno environment){
         Point position = environment.findRobot(state);
-        int matrix[][]=environment.getOriginalEnv();
-        int value = matrix[(int)position.getX()][(int)position.getY()];
+        int value = state.getMaze()[position.x][position.y];
+        //int matrix[][]=environment.getOriginalEnv();
+        //int value = matrix[(int)position.getX()][(int)position.getY()];
         return value;
     }
     
-    public void setPositionValue(Entorno environment, int value){
-        Point position = environment.findRobot(state);
-        int matrix[][]=environment.getOriginalEnv();
-        matrix[(int)position.getX()][(int)position.getY()]= value;
+    
+    
+    public void printStateMaze(){
+        for(int i=0;i<10;i++){
+            for(int j=0;j<10;j++){
+                System.out.print(state.getMaze()[i][j]+" ");
+            }
+            System.out.println();
+        }
+        System.out.println("=================");
     }
 
     public Node getParent() {
