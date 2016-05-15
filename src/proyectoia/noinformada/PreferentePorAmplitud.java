@@ -6,7 +6,9 @@
 package proyectoia.noinformada;
 
 import java.awt.Point;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import proyectoia.data.Entorno;
 import proyectoia.data.Node;
@@ -20,13 +22,20 @@ public class PreferentePorAmplitud {
     private Node root,solution;
     private Entorno environment;
     private Vector<Node> frontier,explored;
-    
+    private String indexes[];
     /**
      * Constructor of this class
      */
     public PreferentePorAmplitud(){
         environment = new Entorno();
-        environment.loadFile("Prueba3");
+        environment.loadFile("Prueba1");
+        indexes = new String[100];
+        int k = 0;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                indexes[k] = i + "" + j;
+            }
+        }
         //initial State
         State initialState = environment.getInitialState();
         //root node - state, parent , operator , cost
@@ -64,11 +73,12 @@ public class PreferentePorAmplitud {
     public Node childNode(Node parent, int operator) {
         //recover the status data of the parent
         
-        int [][] maze = new int[environment.getSize()][environment.getSize()];
-        for(int i=0;i<environment.getSize();i++){
-            for(int j=0;j<environment.getSize();j++){
-                maze[i][j]=parent.getState().getMaze()[i][j];
-            }
+        Map maze = new HashMap();
+        
+        for(int i=0;i<100;i++){
+            
+                maze.put(indexes[i], parent.getState().getMaze().get(indexes[i]));
+            
         }
                 
         
@@ -77,7 +87,7 @@ public class PreferentePorAmplitud {
         //gets the position for the next movement according to the operator
         Point nextPos = parent.applyOperator(operator, environment, parent.getState());
         //create the new state to asign
-        State state = new State(nextPos,maze,goalsParent);
+        State state = new State(nextPos,(HashMap)maze,goalsParent);
         //creates the child node with the calculated state        
         Node child = new Node(state, parent, operator, 1);
         
@@ -93,7 +103,7 @@ public class PreferentePorAmplitud {
         if (value == 6) {
             node.getState().setGoalsAchieved(1);
             node.getState().removeItem(node.getState().getPosition());
-            System.out.println(node.getState().getMaze()[node.getState().getPosition().x][node.getState().getPosition().y]);
+            System.out.println(node.getState().getMaze().get(node.getState().getPosition().x+""+node.getState().getPosition().y));
         }
         //check if this is a goal
         boolean goal = node.isItGoal(environment);
@@ -124,7 +134,7 @@ public class PreferentePorAmplitud {
                         Node child = childNode(node,operators.get(i));
                         Point q = child.getState().getPosition();
                         frontier.add(child); 
-                        
+                        System.out.println("Depth: "+child.getDepth());
                     }
                     //System.out.println("cuantos nodos tiene frontier: "+frontier.size());
                 }else{

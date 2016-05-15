@@ -203,7 +203,7 @@ public class Node {
      */
     public int getPositionValue(Entorno environment){
         Point position = environment.findRobot(state);
-        int value = state.getMaze()[position.x][position.y];
+        int value = (int)state.getMaze().get(position.x+""+position.y);
         //int matrix[][]=environment.getOriginalEnv();
         //int value = matrix[(int)position.getX()][(int)position.getY()];
         return value;
@@ -214,7 +214,7 @@ public class Node {
     public void printStateMaze(){
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
-                System.out.print(state.getMaze()[i][j]+" ");
+                System.out.print(state.getMaze().get(i+""+j)+" ");
             }
             System.out.println();
         }

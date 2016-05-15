@@ -8,6 +8,8 @@ package proyectoia.data;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +19,7 @@ import java.util.logging.Logger;
  * @author chrisecc
  */
 public class Entorno {
-    private int [][] originalEnv;//matrix without the robot,
+    private Map originalEnv;//matrix without the robot,
     private int [] conventions;
     private int [] neighbors;
     private int size;
@@ -42,8 +44,7 @@ public class Entorno {
         for(int i=0;i<conventions.length;i++){conventions[i]=i;}
         neighbors=new int[4];
         neighbors[0]=1;neighbors[1]=1;neighbors[2]=1;neighbors[3]=1;//left,up,right,down
-        size=10;//square matrix size
-        originalEnv= new int[size][size];
+        originalEnv = new HashMap();
         goalCount=2;// 2 items
         initialState=new State();
     }
@@ -61,10 +62,10 @@ public class Entorno {
                 for(int j = 0; j < size; ++j){
                     if(input.hasNextInt()){
                         matrix[i][j] = input.nextInt();
-                        originalEnv[i][j] = matrix[i][j];
-                        if(originalEnv[i][j]==conventions[2]){
+                        originalEnv.put(i+""+j, matrix[i][j]);
+                        if((int)originalEnv.get(i+""+j)==conventions[2]){
                             initialState.setPosition(new Point(i,j));
-                            originalEnv[i][j]=conventions[0];
+                            originalEnv.put(i+""+j,conventions[0]);
                             
                         }
                     }
@@ -75,14 +76,13 @@ public class Entorno {
         }catch (FileNotFoundException ex) {
             Logger.getLogger(Entorno.class.getName()).log(Level.SEVERE, null, ex);
         }
-        /*for(int i= 0; i<size;i++){
-            for(int j= 0; j<size;j++){
-                System.out.print(matrix[i][j]+" ");
-            }
-            System.out.println();
-        }*/
     }
     
+    /***
+     * 
+     * @param mundoFile
+     * @return 
+     */
      public int[][] getMundo(File mundoFile){
         
         
@@ -118,7 +118,6 @@ public class Entorno {
      * @param state State of the world in which to find the robot
      */
     public Point findRobot(State state) {
-         
         return state.getPosition();
     }
     
@@ -135,50 +134,50 @@ public class Entorno {
 
 	//one position of the inner square of the matrix
 	if((row>0 && row<(size-1)) && (col>0 && col<(size-1)) ){
-            L= originalEnv[row][col-1];//left
-            U= originalEnv[row-1][col];//up
-            R= originalEnv[row][col+1];//right              
-            D= originalEnv[row+1][col];//down
+            L= (int) originalEnv.get(row+""+(col-1));//left
+            U= (int)originalEnv.get((row-1)+""+col);//up
+            R= (int)originalEnv.get(row+""+(col+1));//right              
+            D= (int)originalEnv.get((row+1)+""+col);//down
 	}
 	//upper edge 
 	if(row==0){
-            D=originalEnv[row+1][col];
+            D=(int)originalEnv.get((row+1)+""+col);
             if(col>0 && col<(size-1)){//no corners
-                L= originalEnv[row][col-1];
-                R= originalEnv[row][col+1];
+                L=(int) originalEnv.get(row+""+(col-1));
+                R= (int) originalEnv.get(row+""+(col+1));
             }
-            if(col==0){R= originalEnv[row][col+1];}//left corner
-            if(col==(size-1)){L= originalEnv[row][col-1];}//right corner
+            if(col==0){R= (int)originalEnv.get(row+""+(col+1));}//left corner
+            if(col==(size-1)){L= (int)originalEnv.get(row+""+(col-1));}//right corner
 	}
 	//lower edge 
 	if(row==(size-1)){
-            U=originalEnv[row-1][col];
+            U=(int)originalEnv.get((row-1)+""+col);
             if(col>0 && col<(size-1)){//no corners
-                L= originalEnv[row][col-1];
-                R= originalEnv[row][col+1];
+                L= (int)originalEnv.get(row+""+(col-1));
+                R= (int)originalEnv.get(row+""+(col+1));
             }
-            if(col==0){R= originalEnv[row][col+1];}//left corner
-            if(col==(size-1)){L= originalEnv[row][col-1];}//right corner
+            if(col==0){R= (int)originalEnv.get(row+""+(col+1));}//left corner
+            if(col==(size-1)){L= (int)originalEnv.get(row+""+(col-1));}//right corner
 	}
 	//left edge
 	if(col==0){
-            R=originalEnv[row][col+1];
+            R=(int)originalEnv.get(row+""+(col+1));
             if(row>0 && row<(size-1)){//no corners
-                U= originalEnv[row-1][col];//up
-                D= originalEnv[row+1][col];//down
+                U= (int)originalEnv.get((row-1)+""+col);//up
+                D= (int)originalEnv.get((row+1)+""+col);//down
             }
-            if(row==0){D= originalEnv[row+1][col];}//left corner
-            if(row==(size-1)){U= originalEnv[row-1][col];}//right corner
+            if(row==0){D= (int)originalEnv.get((row+1)+""+col);}//left corner
+            if(row==(size-1)){U= (int)originalEnv.get((row-1)+""+col);}//right corner
 	}
 	//right edge
 	if(col==(size-1)){
-            L=originalEnv[row][col-1];
+            L=(int)originalEnv.get(row+""+(col-1));
             if(row>0 && row<(size-1)){//no corners
-                U= originalEnv[row-1][col];//up
-                D= originalEnv[row+1][col];//down
+                U= (int)originalEnv.get((row-1)+""+col);//up
+                D= (int)originalEnv.get((row+1)+""+col);//down
             }
-            if(row==0){D= originalEnv[row+1][col];}//left corner
-            if(row==(size-1)){U= originalEnv[row-1][col];}//right corner
+            if(row==0){D= (int)originalEnv.get((row+1)+""+col);}//left corner
+            if(row==(size-1)){U= (int)originalEnv.get((row-1)+""+col);}//right corner
 	}
 
 	neighbors[0]= L;
@@ -220,7 +219,7 @@ public class Entorno {
      * returns the original environment, without the robot
      * @return the matrix with the original environment
      */
-    public int [][] getOriginalEnv(){
+    public Map getOriginalEnv(){
         /*for(int i = 0; i < size; ++i){
             for(int j = 0; j < size; ++j){
                 System.out.print(" "+originalEnv[i][j]+" ");
