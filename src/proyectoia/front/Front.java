@@ -10,6 +10,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import proyectoia.controllers.FrontController;
 
 /**
  *
@@ -20,12 +21,19 @@ public class Front extends javax.swing.JFrame {
     /**
      * Creates new form Front
      */
+    FrontController fc;
+    Mundo miMundo;
+    
     public Front() {
         initComponents();
+        
+        //instancio controladores
+        fc = new FrontController();
         
         //asigno un filtro de busquda de archivos al jFileChooser
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (*.txt)","txt");
         cargarRutaMundoJFC.setFileFilter(filtro);
+        miMundo = new Mundo();//creo un mundo vacio
     }
 
     /**
@@ -49,7 +57,7 @@ public class Front extends javax.swing.JFrame {
         busquedaJComboBox = new javax.swing.JComboBox<>();
         algoritmosJComboBox = new javax.swing.JComboBox<>();
         ejecutarJButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        scrollMundo = new javax.swing.JScrollPane();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
@@ -137,7 +145,7 @@ public class Front extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelContentLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
+                        .addComponent(scrollMundo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContentLayout.createSequentialGroup()
@@ -186,7 +194,7 @@ public class Front extends javax.swing.JFrame {
                     .addComponent(ejecutarJButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(scrollMundo)
                     .addGroup(panelContentLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -236,6 +244,9 @@ public class Front extends javax.swing.JFrame {
             jTextFieldRutaMundo.setText(archivoSeleccionado.getAbsolutePath());
             jTextFieldRutaMundo.setToolTipText(archivoSeleccionado.getAbsolutePath());
             editarMundoJButton.setEnabled(true);// habilito boton abrir Script
+            
+            miMundo.CrearMundo(fc.crearMundo(archivoSeleccionado));//creo el mundo
+            scrollMundo.add(miMundo);//agrego el mundo al scrollPanel
             
             cargarRutaMundoJFC.hide();
             cargarMundoJDialog.hide();           
@@ -316,7 +327,6 @@ public class Front extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -325,6 +335,7 @@ public class Front extends javax.swing.JFrame {
     private javax.swing.JLabel labelLogo;
     private javax.swing.JPanel panelContent;
     private javax.swing.JPanel panelLogo;
+    private javax.swing.JScrollPane scrollMundo;
     private javax.swing.JLabel tipoBusquedaJLabel;
     // End of variables declaration//GEN-END:variables
 }

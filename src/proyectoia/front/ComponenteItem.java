@@ -5,7 +5,7 @@
  */
 package proyectoia.front;
 
-import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -23,7 +23,7 @@ public class ComponenteItem extends javax.swing.JPanel {
      * @param index
      * @param textlabel
      */
-    public ComponenteItem( String index,Icon icon)  {
+    public ComponenteItem( String index,ImageIcon icon)  {
         initComponents();
         //JPanel
         setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));

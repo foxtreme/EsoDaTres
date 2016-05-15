@@ -76,6 +76,41 @@ public class Entorno {
         }
     }
     
+    public int[][] getMundo(File mundoFile){
+        int[][] mundoMatrix = new int[size][size];
+        
+        int matrix[][]=new int[size][size];
+        try {
+            Scanner input = new Scanner(mundoFile);
+            for(int i = 0; i < size; ++i){
+                for(int j = 0; j < size; ++j){
+                    if(input.hasNextInt()){
+                        matrix[i][j] = input.nextInt();
+                        mundoMatrix[i][j] = matrix[i][j];
+                        if(mundoMatrix[i][j]==conventions[2]){
+                            System.out.println(i+" - "+j);
+                            initialState.setPosition(new Point(i,j));
+                            mundoMatrix[i][j]=conventions[0];
+                            
+                        }
+                    }
+                }
+            }
+            
+            
+                        
+        }catch (FileNotFoundException ex) {
+            Logger.getLogger(Entorno.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for(int i= 0; i<size;i++){
+            for(int j= 0; j<size;j++){
+                System.out.print(matrix[i][j]);
+            }
+            System.out.println();
+        }
+        return mundoMatrix;
+    }
+    
     
     /**
      * finds the position of the robot
