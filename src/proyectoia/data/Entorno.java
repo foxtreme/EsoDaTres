@@ -77,7 +77,7 @@ public class Entorno {
     }
     
     public int[][] getMundo(File mundoFile){
-        int[][] mundoMatrix = new int[size][size];
+        
         
         int matrix[][]=new int[size][size];
         try {
@@ -86,13 +86,8 @@ public class Entorno {
                 for(int j = 0; j < size; ++j){
                     if(input.hasNextInt()){
                         matrix[i][j] = input.nextInt();
-                        mundoMatrix[i][j] = matrix[i][j];
-                        if(mundoMatrix[i][j]==conventions[2]){
-                            System.out.println(i+" - "+j);
-                            initialState.setPosition(new Point(i,j));
-                            mundoMatrix[i][j]=conventions[0];
-                            
-                        }
+                        
+                        
                     }
                 }
             }
@@ -108,7 +103,7 @@ public class Entorno {
             }
             System.out.println();
         }
-        return mundoMatrix;
+        return matrix;
     }
     
     

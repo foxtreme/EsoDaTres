@@ -6,6 +6,8 @@
 package proyectoia.controllers;
 
 import java.io.File;
+import java.util.Map;
+import proyectoia.data.Core;
 import proyectoia.data.Entorno;
 
 /**
@@ -17,7 +19,13 @@ public class FrontController {
     public FrontController() {
     }
     
-    public int[][] crearMundo(File mundoFile){
+    public int[][] getMundoMatrix(File mundoFile){
         return new Entorno().getMundo(mundoFile);
     }
+    
+    public Map getMundo(int[][] mundo){
+        return new Core().getMundo(mundo);
+    }
+    
+    
 }
