@@ -90,7 +90,6 @@ public class Front extends javax.swing.JFrame {
         setResizable(false);
 
         labelLogo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyectoia/images/banner.png"))); // NOI18N
 
         javax.swing.GroupLayout panelLogoLayout = new javax.swing.GroupLayout(panelLogo);
         panelLogo.setLayout(panelLogoLayout);
@@ -101,7 +100,7 @@ public class Front extends javax.swing.JFrame {
         panelLogoLayout.setVerticalGroup(
             panelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLogoLayout.createSequentialGroup()
-                .addComponent(labelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
                 .addGap(13, 13, 13))
         );
 
@@ -224,7 +223,7 @@ public class Front extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -245,8 +244,12 @@ public class Front extends javax.swing.JFrame {
             jTextFieldRutaMundo.setToolTipText(archivoSeleccionado.getAbsolutePath());
             editarMundoJButton.setEnabled(true);// habilito boton abrir Script
             
+            //cargo el mundo inicial
             miMundo.CrearMundo(fc.crearMundo(archivoSeleccionado));//creo el mundo
             scrollMundo.add(miMundo);//agrego el mundo al scrollPanel
+            scrollMundo.setVisible(false);
+            
+            
             
             cargarRutaMundoJFC.hide();
             cargarMundoJDialog.hide();           
