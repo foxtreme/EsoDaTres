@@ -34,7 +34,7 @@ public class Entorno {
         for(int i=0;i<conventions.length;i++){conventions[i]=i;}
         neighbors=new int[4];
         neighbors[0]=1;neighbors[1]=1;neighbors[2]=1;neighbors[3]=1;//left,up,right,down
-        size=3;//square matrix size
+        size=10;//square matrix size
         originalEnv= new int[size][size];
         goalCount=2;// 2 items
         initialState=new State();

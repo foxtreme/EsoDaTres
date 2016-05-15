@@ -58,6 +58,7 @@ public class Front extends javax.swing.JFrame {
         algoritmosJComboBox = new javax.swing.JComboBox<>();
         ejecutarJButton = new javax.swing.JButton();
         scrollMundo = new javax.swing.JScrollPane();
+        panelMundo = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
@@ -129,6 +130,19 @@ public class Front extends javax.swing.JFrame {
 
         ejecutarJButton.setText("Buscar");
         ejecutarJButton.setEnabled(false);
+
+        javax.swing.GroupLayout panelMundoLayout = new javax.swing.GroupLayout(panelMundo);
+        panelMundo.setLayout(panelMundoLayout);
+        panelMundoLayout.setHorizontalGroup(
+            panelMundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 416, Short.MAX_VALUE)
+        );
+        panelMundoLayout.setVerticalGroup(
+            panelMundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 259, Short.MAX_VALUE)
+        );
+
+        scrollMundo.setViewportView(panelMundo);
 
         jLabel1.setText("# de Nodos Expandidos:");
 
@@ -246,8 +260,8 @@ public class Front extends javax.swing.JFrame {
             
             //cargo el mundo inicial
             miMundo.CrearMundo(fc.crearMundo(archivoSeleccionado));//creo el mundo
-            scrollMundo.add(miMundo);//agrego el mundo al scrollPanel
-            scrollMundo.setVisible(false);
+            panelMundo.add(miMundo);//agrego el mundo al scrollPanel
+            
             
             
             
@@ -261,7 +275,7 @@ public class Front extends javax.swing.JFrame {
     }//GEN-LAST:event_cargarRutaMundoJFCActionPerformed
 
     private void cargarMundoJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarMundoJButtonActionPerformed
-        cargarMundoJDialog.setSize(62,360);
+        cargarMundoJDialog.setSize(620,360);
         cargarMundoJDialog.setLocationRelativeTo(null);
         cargarMundoJDialog.setVisible(true);
         cargarRutaMundoJFC.setVisible(true);
@@ -338,6 +352,7 @@ public class Front extends javax.swing.JFrame {
     private javax.swing.JLabel labelLogo;
     private javax.swing.JPanel panelContent;
     private javax.swing.JPanel panelLogo;
+    private javax.swing.JPanel panelMundo;
     private javax.swing.JScrollPane scrollMundo;
     private javax.swing.JLabel tipoBusquedaJLabel;
     // End of variables declaration//GEN-END:variables
