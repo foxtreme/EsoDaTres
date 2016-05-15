@@ -177,7 +177,7 @@ public class PreferentePorAmplitud {
     
     public static void main(String []args){
         PreferentePorAmplitud ppa = new PreferentePorAmplitud();
-        ppa.breadthFirst();
+        //ppa.breadthFirst();
         /*
         boolean b0,b1,b2,b3,b4,b5,b6,b7;
         Node n0 = ppa.getFrontier().firstElement();
