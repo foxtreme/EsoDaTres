@@ -1,18 +1,15 @@
 
 package proyectoia.front;
+
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -37,7 +34,7 @@ public class Mundo extends JPanel implements ActionListener{
     }
 
     public void CrearMundo(int[][] mundo){
-        int size = (mundo.length+1)*30;
+        int size = (mundo.length)*30;
         this.setSize(size,size);
         //Creo el mundo en base a una arreglo de n*n de forma dinámica
         //con sus respctivas propiedades
@@ -45,7 +42,9 @@ public class Mundo extends JPanel implements ActionListener{
             for(int j=0; j<mundo.length;j++){
                 //instancia nueva a componente
                 
-                ImageIcon icon = new ImageIcon("images/"+mundo[i][j]+".png");
+                //ImageIcon icon = new ImageIcon("images/"+mundo[i][j]+".png");
+                ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/images/0.png"));
+                
                 index = ""+i+""+j+"";
                 
                 ComponenteItem casilla = new ComponenteItem(index,icon);
