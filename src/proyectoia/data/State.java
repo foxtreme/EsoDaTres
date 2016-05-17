@@ -6,8 +6,6 @@
 package proyectoia.data;
 
 import java.awt.Point;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -16,15 +14,24 @@ import java.util.Map;
 public class State {
 
     private Point position;
-    private Map maze;
+    private int [][] maze;
     private int goalsAchieved;
+    private boolean suit;
+
+    public boolean isSuit() {
+        return suit;
+    }
+
+    public void setSuit(boolean suit) {
+        this.suit = suit;
+    }
     private int cost;//cost of getting to this state
 
     public State() {
         goalsAchieved=0;
     }
     
-    public State(Point position, HashMap maze, int goalsAchieved){
+    public State(Point position, int[][] maze, int goalsAchieved){
         this.position = position;
         this.maze = maze;
         this.goalsAchieved = goalsAchieved;
@@ -59,16 +66,16 @@ public class State {
         return cost;
     }
 
-    public Map getMaze() {
+    public int[][] getMaze() {
         
         return maze;
     }
 
-    public void setMaze(Map maze) {
+    public void setMaze(int[][] maze) {
         this.maze = maze;
     }
     
     public void removeItem(Point item){
-        this.maze.put(item.x+""+item.y, 0);
+        this.maze[item.x][item.y]=0;
     }
 }

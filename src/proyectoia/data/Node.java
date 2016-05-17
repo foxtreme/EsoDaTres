@@ -14,207 +14,212 @@ import java.util.List;
  * @author chris
  */
 public class Node {
-    
+
     private State state;
     private Node parent;
     private int operator;//4:left, 8:up, 6:right, 5:down
     private int depth;
     private int cost;
-    
-    
+
     /**
      * Constructor of the Node class
      */
-    public Node(State state){
+    public Node(State state) {
         this.state = state;
-        depth=0;
-        cost=0;
+        depth = 0;
+        cost = 0;
     }
-    
+
     /**
      * parameterized constructor of the Node class
+     *
      * @param state
      * @param parent
      * @param operator
      * @param depth
      * @param cost
      */
-    public Node(State state,Node parent,int operator,int cost){
+    public Node(State state, Node parent, int operator, int cost) {
         this.state = state;
-        this.parent=parent;
+        this.parent = parent;
         this.operator = operator;
-        if(parent!=null){
+        if (parent != null) {
             this.cost = parent.cost + cost;
-            this.depth= parent.depth+ 1;
-        }else{
-            this.cost = this.cost+cost;
+            this.depth = parent.depth + 1;
+        } else {
+            this.cost = this.cost + cost;
             this.depth = 0;
-        }        
+        }
     }
-    
+
     /**
-     * Calls the corresponding directional movement 
+     * Calls the corresponding directional movement
+     *
      * @param operator int corresponding to each of the 4 directions
      * @param environment world of the robot
      */
-    public Point applyOperator(int operator,Entorno environment,State state){
-        //State nextState=new State();
-        Point movement=new Point();
-        if(operator==4){
-            movement=moveLeft(environment,state);
+    public Point applyOperator(int operator, Entorno environment, State state) {
+        Point movement = new Point();
+        if (isItGrandpa()) {
+            movement = null;
+        } else {
+            if (operator == 4) {
+                movement = moveLeft(environment, state);
+            }
+            if (operator == 6) {
+                movement = moveRight(environment, state);
+            }
+            if (operator == 8) {
+                movement = moveUp(environment, state);
+            }
+            if (operator == 5) {
+                movement = moveDown(environment, state);
+            }
         }
-        if(operator==6){
-            movement=moveRight(environment,state);
-        }
-        if(operator==8){
-            movement=moveUp(environment,state);
-        }
-        if(operator==5){
-            movement=moveDown(environment,state);
-        }
-        //ensures to keep track of the goals by the parent's state
-        //nextState.setGoalsAchieved(state.getGoalsAchieved());
         return movement;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
     }
-    
+
     /**
      * Moves to the left
+     *
      * @param environment world of the robot
      */
-    private Point moveLeft(Entorno environment,State state) {
-        int neighbors[]= new int[4];
+    private Point moveLeft(Entorno environment, State state) {
+        int neighbors[] = new int[4];
         Point movement = new Point();
         neighbors = environment.getNeighbors(state);
-        //State nextState=new State();
-        if(neighbors[0]!=1){
+        if (neighbors[0] != 1) {
             Point robot = environment.findRobot(state);
             int row = (int) robot.getX();
-            int col = ((int) robot.getY())-1;
-            movement.setLocation(row,col);
-            //nextState = environment.setRobotPosition(movement);
-            //nextState.setCost(neighbors[0]);
+            int col = ((int) robot.getY()) - 1;
+            movement.setLocation(row, col);
         }
         return movement;
     }
-    
+
     /**
-     * Moves up 
+     * Moves up
+     *
      * @param environment world of the robot
      */
-    private Point moveUp(Entorno environment,State state) {
-        int neighbors[]= new int[4];
+    private Point moveUp(Entorno environment, State state) {
+        int neighbors[] = new int[4];
         Point movement = new Point();
         neighbors = environment.getNeighbors(state);
-        //State nextState=new State();
-        if(neighbors[1]!=1){
+        if (neighbors[1] != 1) {
             Point robot = environment.findRobot(state);
-            int row = ((int) robot.getX())-1;
+            int row = ((int) robot.getX()) - 1;
             int col = (int) robot.getY();
-            movement = new Point(row,col);
-            //nextState = environment.setRobotPosition(movement);
-            //nextState.setCost(neighbors[1]);
+            movement = new Point(row, col);
         }
         return movement;
     }
 
     /**
      * Moves to the right
+     *
      * @param environment world of the robot
      */
-    private Point moveRight(Entorno environment,State state) {
-        int neighbors[]= new int[4];
+    private Point moveRight(Entorno environment, State state) {
+        int neighbors[] = new int[4];
         Point movement = new Point();
         neighbors = environment.getNeighbors(state);
-        //State nextState=new State();
-        if(neighbors[2]!=1){
+        if (neighbors[2] != 1) {
             Point robot = environment.findRobot(state);
             int row = (int) robot.getX();
-            int col = ((int) robot.getY())+1;
-            movement = new Point(row,col);
-            //nextState = environment.setRobotPosition(movement);
-            //nextState.setCost(neighbors[2]);
+            int col = ((int) robot.getY()) + 1;
+            movement = new Point(row, col);
         }
         return movement;
     }
-        
-        
+
     /**
      * Moves down
+     *
      * @param environment world of the robot
      */
-    private Point moveDown(Entorno environment,State state) {
-        int neighbors[]= new int[4];
+    private Point moveDown(Entorno environment, State state) {
+        int neighbors[] = new int[4];
         Point movement = new Point();
         neighbors = environment.getNeighbors(state);
-        //State nextState=new State();
-        if(neighbors[3]!=1){
+        if (neighbors[3] != 1) {
             Point robot = environment.findRobot(state);
-            int row = ((int) robot.getX())+1;
+            int row = ((int) robot.getX()) + 1;
             int col = (int) robot.getY();
-            movement = new Point(row,col);
-            //nextState = environment.setRobotPosition(movement);
-            //nextState.setCost(neighbors[3]);
+            movement = new Point(row, col);
         }
         return movement;
     }
-    
+
     /**
      * Verifies if all goals have been achieved
+     *
      * @param state Entorno with the world object
      * @return boolean whether it is or not a goal
-     */    
-    public boolean isItGoal(Entorno environment){
-        return (state.getGoalsAchieved()==environment.getGoalCount());
+     */
+    public boolean isItGoal(Entorno environment) {
+        return (state.getGoalsAchieved() == environment.getGoalCount());
     }
-    
+
     /**
      * Checks if this node is the root node
-     * @return 
+     *
+     * @return
      */
-    public boolean isItRoot(){
+    public boolean isItRoot() {
         boolean isIt = false;
-        if(parent==null){
-            isIt=true;
+        if (parent == null) {
+            isIt = true;
         }
         return isIt;
     }
-    
+
+    public boolean isItGrandpa() {
+        boolean grandpa = false;
+        if (!isItRoot())  {
+            boolean matrix = (state.getMaze() == parent.getState().getMaze());
+            boolean goals = (state.getGoalsAchieved() == parent.getState().getGoalsAchieved());
+            boolean suit = (state.isSuit() == parent.getState().isSuit());
+            boolean robot = (state.getPosition() == parent.getState().getPosition());
+            grandpa = (matrix && goals && suit && robot);
+        }
+        return grandpa;
+    }
+
     /**
      * Gets the list of the solution nodes
-     * @return 
+     *
+     * @return
      */
     public List<Node> getPathFromRoot() {
-	List<Node> path = new ArrayList<Node>();
-	Node thisNode = this;
-	while (!thisNode.isItRoot()) {
-		path.add(0, thisNode);
-		thisNode = thisNode.getParent();
-	}
-	// adds the root node
-	path.add(0, thisNode);
-	return path;
+        List<Node> path = new ArrayList<Node>();
+        Node thisNode = this;
+        while (!thisNode.isItRoot()) {
+            path.add(0, thisNode);
+            thisNode = thisNode.getParent();
+        }
+        // adds the root node
+        path.add(0, thisNode);
+        return path;
     }
-    
+
     /**
      * returns the value of the cell where the robot stands
+     *
      * @param environment Entorno world of the robot
      * @return int with the value of the cell
      */
-    public int getPositionValue(Entorno environment){
+    public int getPositionValue(Entorno environment) {
         Point position = environment.findRobot(state);
-        int value = (int)state.getMaze().get(position.x+""+position.y);
-        //int matrix[][]=environment.getOriginalEnv();
-        //int value = matrix[(int)position.getX()][(int)position.getY()];
+        int value = state.getMaze()[position.x][position.y];
         return value;
     }
-    
-    
-    
-    public void printStateMaze(){
-        for(int i=0;i<10;i++){
-            for(int j=0;j<10;j++){
-                System.out.print(state.getMaze().get(i+""+j)+" ");
+
+    public void printStateMaze() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                System.out.print(state.getMaze()[i][j] + " ");
             }
             System.out.println();
         }
@@ -240,11 +245,9 @@ public class Node {
     public State getState() {
         return state;
     }
-    
-    public void setState(State state){
+
+    public void setState(State state) {
         this.state = state;
     }
 
-    
-    
 }
