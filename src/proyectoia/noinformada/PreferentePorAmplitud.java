@@ -21,6 +21,7 @@ public class PreferentePorAmplitud {
     private Node root, solution;
     private Entorno environment;
     private Vector<Node> frontier, explored;
+    private long totalTime; 
 
     /**
      * Constructor of this class
@@ -164,6 +165,7 @@ public class PreferentePorAmplitud {
     }
 
     public void breadthFirst() {
+        long startTime = System.currentTimeMillis();
         boolean loop = true;
         while (loop) {
             //if there are no more nodes to expand, end it
@@ -199,6 +201,8 @@ public class PreferentePorAmplitud {
                 }
             }
         }
+        long endTime = System.currentTimeMillis();
+        totalTime = endTime - startTime;
     }
 
     /**
@@ -224,15 +228,19 @@ public class PreferentePorAmplitud {
     public Node getSolution() {
         return solution;
     }
+    
+    
+    public long getTotalTime() {
+        return totalTime;
+    }
 
     public static void main(String[] args) {
-        long startTime = System.currentTimeMillis();
+        
         PreferentePorAmplitud ppa = new PreferentePorAmplitud();
         ppa.breadthFirst();
-        long endTime = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-        System.out.println(totalTime+" milisecs");
+        System.out.println("running time (milisecs): "+ppa.getTotalTime());
 
     }
+
 
 }
