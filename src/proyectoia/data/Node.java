@@ -250,4 +250,12 @@ public class Node {
         this.state = state;
     }
 
+    public void infoNode(){
+        System.out.println("Depth: "+depth);
+        System.out.println("Cost: "+cost);
+        System.out.println("Operator: "+operator);
+        System.out.println("Traje: "+state.isSuit());
+        System.out.println("goals: "+state.getGoalsAchieved());
+        System.out.println(state.getPosition().toString());
+    }
 }

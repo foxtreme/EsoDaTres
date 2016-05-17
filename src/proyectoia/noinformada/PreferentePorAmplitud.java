@@ -179,6 +179,7 @@ public class PreferentePorAmplitud {
                 explored.add(node);
                 //expand the node and tell if it's the goal
                 loop = !expand(node);
+                System.out.println("depth: " + node.getDepth());
                 if (loop) {//if node wasn't the goal
                     Vector<Integer> operators = generateOperators(node);
                     for (int i = 0; i < operators.size(); i++) {
@@ -233,14 +234,14 @@ public class PreferentePorAmplitud {
     public long getTotalTime() {
         return totalTime;
     }
-
+/*
     public static void main(String[] args) {
         
         PreferentePorAmplitud ppa = new PreferentePorAmplitud();
         ppa.breadthFirst();
         System.out.println("running time (milisecs): "+ppa.getTotalTime());
 
-    }
+    }*/
 
 
 }
