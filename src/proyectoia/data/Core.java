@@ -23,7 +23,11 @@ public class Core {
     public Core() {
 
     }
-
+    /***
+     * Retorna un Map con los items indexados del mundo a partir de una matriz cuadrada
+     * @param mundo
+     * @return 
+     */
     public Map getMundo(int[][] mundo) {
 
         //Creo el mundo en base a un arreglo de n*n de forma dinámica

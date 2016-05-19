@@ -53,10 +53,10 @@ public class Entorno {
      * Loads a text file
      * @param fileName String with the name of the file
      */
-    public void loadFile(String fileName){
+    public void loadFile(File fileName){
         int matrix[][]=new int[size][size];
         try {
-            Scanner input = new Scanner(new File("src/proyectoia/pruebas/"+fileName+".txt"));
+            Scanner input = new Scanner(fileName);
             for(int i = 0; i < size; ++i){
                 for(int j = 0; j < size; ++j){
                     if(input.hasNextInt()){
@@ -213,9 +213,40 @@ public class Entorno {
         return initialState;
     }
 
-    public int[][] getMundo(File mundoFile) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-      
+    
+    /***
+     * Retorna extrae la matriz del archivo
+     * @param mundoFile
+     * @return 
+     */
+    public int[][] getMundo(File mundoFile){
+         
+         
+         int matrix[][]=new int[size][size];
+         try {
+             Scanner input = new Scanner(mundoFile);
+             for(int i = 0; i < size; ++i){
+                 for(int j = 0; j < size; ++j){
+                     if(input.hasNextInt()){
+                         matrix[i][j] = input.nextInt();
+                         
+                         
+                     }
+                 }
+             }
+             
+             
+                         
+         }catch (FileNotFoundException ex) {
+             Logger.getLogger(Entorno.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         for(int i= 0; i<size;i++){
+             for(int j= 0; j<size;j++){
+                 System.out.print(matrix[i][j]);
+             }
+             System.out.println();
+         }
+         return matrix;
+    }//fin getMundo
     
 }

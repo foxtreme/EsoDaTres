@@ -176,15 +176,18 @@ public class Node {
     }
 
     public boolean isItGrandpa() {
-        boolean grandpa = false;
-        if (!isItRoot())  {
-            boolean matrix = (state.getMaze() == parent.getState().getMaze());
-            boolean goals = (state.getGoalsAchieved() == parent.getState().getGoalsAchieved());
-            boolean suit = (state.isSuit() == parent.getState().isSuit());
-            boolean robot = (state.getPosition() == parent.getState().getPosition());
-            grandpa = (matrix && goals && suit && robot);
+        boolean cycle = false;
+        Node thisNode = this;
+        while (!thisNode.isItRoot() && (!cycle)) {
+        
+            boolean matrix = (thisNode.getState().getMaze() == thisNode.getParent().getState().getMaze());
+            boolean goals = (thisNode.getState().getGoalsAchieved() == thisNode.getParent().getState().getGoalsAchieved());
+            boolean suit = (thisNode.getState().isSuit() == thisNode.getParent().getState().isSuit());
+            boolean robot = (thisNode.getState().getPosition() == thisNode.getParent().getState().getPosition());
+            cycle = (matrix && goals && suit && robot);
+            thisNode = thisNode.getParent();
         }
-        return grandpa;
+        return cycle;
     }
 
     /**

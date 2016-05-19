@@ -6,6 +6,7 @@
 package proyectoia.noinformada;
 
 import java.awt.Point;
+import java.io.File;
 import java.util.List;
 import java.util.Vector;
 import proyectoia.data.Entorno;
@@ -26,9 +27,9 @@ public class Profundidad {
     /**
      * Constructor of this class
      */
-    public Profundidad() {
+    public Profundidad(File fileMundo) {
         environment = new Entorno();
-        environment.loadFile("Prueba1");
+        environment.loadFile(fileMundo);
         //initial State
         State initialState = environment.getInitialState();
         //root node - state, parent , operator , cost
@@ -247,17 +248,5 @@ public class Profundidad {
         return totalTime;
     }
 
-    public static void main(String[] args) {
-
-        Profundidad p = new Profundidad();
-        p.depthFirst();
-        System.out.println("running time (milisecs): " + p.getTotalTime());
-        if(p.solution==null){
-            System.out.println("no se encontro");
-        }else{
-            System.out.println("se encontro a profundidad: "+p.getSolution().getDepth());
-        }
-        
-    }
-
+   
 }

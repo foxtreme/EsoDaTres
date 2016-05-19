@@ -6,6 +6,7 @@
 package proyectoia.noinformada;
 
 import java.awt.Point;
+import java.io.File;
 import java.util.List;
 import java.util.Vector;
 import proyectoia.data.Entorno;
@@ -26,9 +27,9 @@ public class PreferentePorAmplitud {
     /**
      * Constructor of this class
      */
-    public PreferentePorAmplitud() {
+    public PreferentePorAmplitud(File fileMundo) {
         environment = new Entorno();
-        environment.loadFile("Prueba1");
+        environment.loadFile(fileMundo);
         //initial State
         State initialState = environment.getInitialState();
         //root node - state, parent , operator , cost
