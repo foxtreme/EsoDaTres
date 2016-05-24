@@ -60,9 +60,7 @@ public class Node {
      */
     public Point applyOperator(int operator, Entorno environment, State state) {
         Point movement = new Point();
-        if (isItGrandpa()) {
-            movement = null;
-        } else {
+        
             if (operator == 4) {
                 movement = moveLeft(environment, state);
             }
@@ -75,7 +73,7 @@ public class Node {
             if (operator == 5) {
                 movement = moveDown(environment, state);
             }
-        }
+        
         return movement;
 
     }
@@ -177,15 +175,15 @@ public class Node {
 
     public boolean isItGrandpa() {
         boolean cycle = false;
-        Node thisNode = this;
-        while (!thisNode.isItRoot() && (!cycle)) {
-        
-            boolean matrix = (thisNode.getState().getMaze() == thisNode.getParent().getState().getMaze());
-            boolean goals = (thisNode.getState().getGoalsAchieved() == thisNode.getParent().getState().getGoalsAchieved());
-            boolean suit = (thisNode.getState().isSuit() == thisNode.getParent().getState().isSuit());
-            boolean robot = (thisNode.getState().getPosition() == thisNode.getParent().getState().getPosition());
-            cycle = (matrix && goals && suit && robot);
-            thisNode = thisNode.getParent();
+        List<Node> path = this.getPathFromRoot();
+        path.remove(path.size()-1);
+        // adds the root node
+        for (int i=0;i<path.size() && !cycle;i++) {
+            Node thisNode = path.get(i);
+            boolean goals = (getState().getGoalsAchieved() == thisNode.getState().getGoalsAchieved());
+            boolean suit = (getState().isSuit() == thisNode.getState().isSuit());
+            boolean robot = (getState().getPosition().equals(thisNode.getState().getPosition()));
+            cycle = (goals && suit && robot);
         }
         return cycle;
     }
@@ -254,11 +252,13 @@ public class Node {
     }
 
     public void infoNode(){
+        System.out.println("-----------Node----------");
         System.out.println("Depth: "+depth);
         System.out.println("Cost: "+cost);
         System.out.println("Operator: "+operator);
         System.out.println("Traje: "+state.isSuit());
         System.out.println("goals: "+state.getGoalsAchieved());
-        System.out.println(state.getPosition().toString());
+        System.out.println("position: "+state.getPosition().toString());
+        System.out.println("-------------------------");
     }
 }

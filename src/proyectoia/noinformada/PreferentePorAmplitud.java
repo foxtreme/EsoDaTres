@@ -22,7 +22,7 @@ public class PreferentePorAmplitud {
     private Node root, solution;
     private Entorno environment;
     private Vector<Node> frontier, explored;
-    private long totalTime; 
+    private long totalTime;
 
     /**
      * Constructor of this class
@@ -53,62 +53,18 @@ public class PreferentePorAmplitud {
     private Vector<Integer> generateOperators(Node node) {
         Vector<Integer> operators = new Vector<Integer>();
         int neighbors[] = environment.getNeighbors(node.getState());
-        if (node.isItRoot()) {
-            if (neighbors[0] != 1) {
-                operators.add(4);
-            }//left
-            if (neighbors[1] != 1) {
-                operators.add(8);
-            }//up
-            if (neighbors[2] != 1) {
-                operators.add(6);
-            }//right
-            if (neighbors[3] != 1) {
-                operators.add(5);
-            }//down
-        } else {
-            Point posNode = node.getState().getPosition();
-            Point posParent = node.getParent().getState().getPosition();
-            Point neighbor = new Point();
-            int row, col;
-
-            if (neighbors[0] != 1) {
-                row = posNode.x;
-                col = (posNode.y-1);
-                neighbor.setLocation(row, col);
-                if (!neighbor.equals(posParent)) {
-                    operators.add(4);
-                }
-
-            }
-            if (neighbors[1] != 1) {
-                row = (posNode.x)-1;
-                col = posNode.y;
-                neighbor.setLocation(row, col);
-                if (!neighbor.equals(posParent)) {
-                    operators.add(8);
-                }
-
-            }
-            if (neighbors[2] != 1) {
-                row = posNode.x;
-                col = (posNode.y)+1;
-                neighbor.setLocation(row, col);
-                if (!neighbor.equals(posParent)) {
-                    operators.add(6);
-                }
-
-            }
-            if (neighbors[3] != 1) {
-                row = (posNode.x)+1;
-                col = posNode.y;
-                neighbor.setLocation(row, col);
-                if (!neighbor.equals(posParent)) {
-                    operators.add(5);
-                }
-            }
-        }
-
+        if (neighbors[0] != 1) {
+            operators.add(4);
+        }//left
+        if (neighbors[1] != 1) {
+            operators.add(8);
+        }//up
+        if (neighbors[2] != 1) {
+            operators.add(6);
+        }//right       
+        if (neighbors[3] != 1) {
+            operators.add(5);
+        }//down
         return operators;
     }
 
@@ -120,7 +76,6 @@ public class PreferentePorAmplitud {
      * @return Node child of given father Node
      */
     public Node childNode(Node parent, int operator) {
-        //recover the status data of the parent
         Node child = null;
         Point nextPos = parent.applyOperator(operator, environment, parent.getState());
         if (nextPos != null) {
@@ -139,6 +94,10 @@ public class PreferentePorAmplitud {
             //creates the child node with the calculated state        
             child = new Node(state, parent, operator, 1);
         }
+        //System.out.println("cycling?: "+child.isItGrandpa());
+        if (child.isItGrandpa()) {
+            child = null;
+        }
         return child;
     }
 
@@ -150,7 +109,7 @@ public class PreferentePorAmplitud {
         if (value == 6) {
             node.getState().setGoalsAchieved(1);
             node.getState().removeItem(node.getState().getPosition());
-            
+
         }
         if (value == 3) {
             node.getState().setSuit(true);
@@ -195,7 +154,7 @@ public class PreferentePorAmplitud {
                     List<Node> path = solution.getPathFromRoot();
                     for (int i = 0; i < path.size(); i++) {
                         Point pos = this.getEnvironment().findRobot(path.get(i).getState());
-                        System.out.println((int)pos.getX() + ", " +(int)pos.getY());
+                        System.out.println((int) pos.getX() + ", " + (int) pos.getY());
                     }
                     System.out.println("Number of Expanded nodes: " + explored.size());
                     System.out.println("Depth of the tree: " + solution.getDepth());
@@ -230,19 +189,17 @@ public class PreferentePorAmplitud {
     public Node getSolution() {
         return solution;
     }
-    
-    
+
     public long getTotalTime() {
         return totalTime;
     }
-/*
+    /*
     public static void main(String[] args) {
-        
-        PreferentePorAmplitud ppa = new PreferentePorAmplitud();
+
+        PreferentePorAmplitud ppa = new PreferentePorAmplitud("Prueba1");
         ppa.breadthFirst();
-        System.out.println("running time (milisecs): "+ppa.getTotalTime());
+        System.out.println("running time (milisecs): " + ppa.getTotalTime());
 
-    }*/
-
-
+    }
+    */
 }
