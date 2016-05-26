@@ -7,6 +7,7 @@ package proyectoia.noinformada;
 
 import java.awt.Point;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -23,7 +24,7 @@ public class CostoUniforme {
 
     private Node root, solution;
     private Entorno environment;
-    private Vector<Node> frontier, explored;
+    private List<Node> frontier, explored;
     private long totalTime;
 
     /**
@@ -37,10 +38,10 @@ public class CostoUniforme {
         //root node - state, parent , operator , cost
         root = new Node(initialState, null, 0, 0);
         //this will contain the solution
-        frontier = new Vector<Node>();
+        frontier = new ArrayList<Node>();
         frontier.add(root);
         //this will contain the vectors expanded
-        explored = new Vector<Node>();
+        explored = new ArrayList<Node>();
         //solution is null initially
         solution = null;
     }
@@ -70,6 +71,10 @@ public class CostoUniforme {
         return operators;
     }
 
+    /**
+     * Sorts the frontier and puts in front the nodes with less cost so they are expanded first
+     * @param nodeList 
+     */
     public void sort(List<Node> nodeList) {
         Collections.sort(nodeList, new Comparator<Node>() {
             @Override
@@ -88,8 +93,9 @@ public class CostoUniforme {
      */
     public Node childNode(Node parent, int operator) {
         Node child = null;
+        //gets the position for the next movement according to the operator
         Point nextPos = parent.applyOperator(operator, environment, parent.getState());
-        if (nextPos != null) {
+        if (nextPos != null) {//if the move can be made
             int[][] maze = new int[environment.getSize()][environment.getSize()];
             for (int i = 0; i < environment.getSize(); i++) {
                 for (int j = 0; j < environment.getSize(); j++) {
@@ -98,16 +104,24 @@ public class CostoUniforme {
             }
             int goalsParent = parent.getState().getGoalsAchieved();
             boolean suit = parent.getState().isSuit();
-            //gets the position for the next movement according to the operator
             //create the new state to asign
             State state = new State(nextPos, maze, goalsParent);
             state.setSuit(suit);
             //creates the child node with the calculated state        
             child = new Node(state, parent, operator, 1);
         }
-        //System.out.println("cycling?: "+child.isItGrandpa());
-        if (child.isItGrandpa()) {
+        if (child.isItGrandpa()) {//if the child node has been created before, sets it to null
             child = null;
+        }else{//if the child can be created calculates the cost of being in the new cell and adds it 
+            int cellType = child.getPositionValue(environment);
+            int movementCost=0;
+            if(cellType==4 && (!child.getState().isSuit())){
+                movementCost=3;
+            }
+            if(cellType==5 && (!child.getState().isSuit())){
+                movementCost=6;
+            }
+            child.addCost(movementCost);
         }
         return child;
     }
@@ -144,8 +158,8 @@ public class CostoUniforme {
                 loop = false;
             } else {
                 //get the first node in the frotier
+                sort(frontier);
                 Node node = frontier.remove(0);
-
                 //add the node to the expanded list
                 explored.add(node);
                 //expand the node and tell if it's the goal
@@ -160,7 +174,6 @@ public class CostoUniforme {
                         }
 
                     }
-                    //System.out.println("cuantos nodos tiene frontier: "+frontier.size());
                 } else {
                     List<Node> path = solution.getPathFromRoot();
                     for (int i = 0; i < path.size(); i++) {
@@ -189,11 +202,11 @@ public class CostoUniforme {
         return environment;
     }
 
-    public Vector<Node> getFrontier() {
+    public List<Node> getFrontier() {
         return frontier;
     }
 
-    public Vector<Node> getExplored() {
+    public List<Node> getExplored() {
         return explored;
     }
 
@@ -204,5 +217,14 @@ public class CostoUniforme {
     public long getTotalTime() {
         return totalTime;
     }
+    
+    
+    /*public static void main(String[] args) {
 
+        CostoUniforme cu = new CostoUniforme("Prueba1");
+        cu.uniformCost();
+        System.out.println("running time (milisecs): " + cu.getTotalTime());
+        
+    }*/
+    
 }

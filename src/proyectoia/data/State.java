@@ -25,8 +25,7 @@ public class State {
     public void setSuit(boolean suit) {
         this.suit = suit;
     }
-    private int cost;//cost of getting to this state
-
+    
     public State() {
         goalsAchieved=0;
     }
@@ -58,14 +57,6 @@ public class State {
         this.position = position;
     }
     
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
     public int[][] getMaze() {
         
         return maze;

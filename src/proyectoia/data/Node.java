@@ -21,8 +21,10 @@ public class Node {
     private int depth;
     private int cost;
 
+    
     /**
      * Constructor of the Node class
+     * @param state a given state for this node
      */
     public Node(State state) {
         this.state = state;
@@ -31,23 +33,21 @@ public class Node {
     }
 
     /**
-     * parameterized constructor of the Node class
-     *
-     * @param state
-     * @param parent
-     * @param operator
-     * @param depth
-     * @param cost
+     * Parameterized constructor of the Node class 
+     * @param state the state of the world  for this node
+     * @param parent the node who is parent of this node
+     * @param operator the operator to get to this node
+     * @param cost the cost of getting to this node
      */
     public Node(State state, Node parent, int operator, int cost) {
         this.state = state;
         this.parent = parent;
         this.operator = operator;
-        if (parent != null) {
+        if (parent != null) {//if this node is not root then its depth is 1 more than its parent and the cost accumulates
             this.cost = parent.cost + cost;
             this.depth = parent.depth + 1;
-        } else {
-            this.cost = this.cost + cost;
+        } else {//if this node is the root then its cost is 0 and is depth too
+            this.cost = 0;
             this.depth = 0;
         }
     }
@@ -57,23 +57,23 @@ public class Node {
      *
      * @param operator int corresponding to each of the 4 directions
      * @param environment world of the robot
+     * @param state the state of the world for this node
+     * @return the position where the robot will be next
      */
     public Point applyOperator(int operator, Entorno environment, State state) {
         Point movement = new Point();
-        
-            if (operator == 4) {
+            if (operator == 4) {//left
                 movement = moveLeft(environment, state);
             }
-            if (operator == 6) {
+            if (operator == 6) {//right
                 movement = moveRight(environment, state);
             }
-            if (operator == 8) {
+            if (operator == 8) {//up
                 movement = moveUp(environment, state);
             }
-            if (operator == 5) {
+            if (operator == 5) {//down
                 movement = moveDown(environment, state);
             }
-        
         return movement;
 
     }
@@ -153,7 +153,7 @@ public class Node {
     /**
      * Verifies if all goals have been achieved
      *
-     * @param state Entorno with the world object
+     * @param environment world of the robot
      * @return boolean whether it is or not a goal
      */
     public boolean isItGoal(Entorno environment) {
@@ -163,7 +163,7 @@ public class Node {
     /**
      * Checks if this node is the root node
      *
-     * @return
+     * @return whether this is the root or not
      */
     public boolean isItRoot() {
         boolean isIt = false;
@@ -173,11 +173,16 @@ public class Node {
         return isIt;
     }
 
+    /**
+     * Verifies if this node is equal to any of its ancestors
+     * @return 
+     */
     public boolean isItGrandpa() {
         boolean cycle = false;
+        //creates the branch from the root to this node
         List<Node> path = this.getPathFromRoot();
         path.remove(path.size()-1);
-        // adds the root node
+        // compares to the whole brach
         for (int i=0;i<path.size() && !cycle;i++) {
             Node thisNode = path.get(i);
             boolean goals = (getState().getGoalsAchieved() == thisNode.getState().getGoalsAchieved());
@@ -189,7 +194,7 @@ public class Node {
     }
 
     /**
-     * Gets the list of the solution nodes
+     * Gets the path from the root to the solution nodes
      *
      * @return
      */
@@ -208,8 +213,8 @@ public class Node {
     /**
      * returns the value of the cell where the robot stands
      *
-     * @param environment Entorno world of the robot
-     * @return int with the value of the cell
+     * @param environment world of the robot
+     * @return the value of the cell where the robot is
      */
     public int getPositionValue(Entorno environment) {
         Point position = environment.findRobot(state);
@@ -217,6 +222,9 @@ public class Node {
         return value;
     }
 
+    /**
+     * Auxiliary method to show the node matrix in console
+     */
     public void printStateMaze() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -226,7 +234,21 @@ public class Node {
         }
         System.out.println("=================");
     }
-
+    
+    /**
+     * Auxiliary function to show the info for the node
+     */
+    public void infoNode(){
+        System.out.println("-----------Node----------");
+        System.out.println("Depth: "+depth);
+        System.out.println("Cost: "+cost);
+        System.out.println("Operator: "+operator);
+        System.out.println("Traje: "+state.isSuit());
+        System.out.println("goals: "+state.getGoalsAchieved());
+        System.out.println("position: "+state.getPosition().toString());
+        System.out.println("-------------------------");
+    }
+    
     public Node getParent() {
         return parent;
     }
@@ -251,14 +273,9 @@ public class Node {
         this.state = state;
     }
 
-    public void infoNode(){
-        System.out.println("-----------Node----------");
-        System.out.println("Depth: "+depth);
-        System.out.println("Cost: "+cost);
-        System.out.println("Operator: "+operator);
-        System.out.println("Traje: "+state.isSuit());
-        System.out.println("goals: "+state.getGoalsAchieved());
-        System.out.println("position: "+state.getPosition().toString());
-        System.out.println("-------------------------");
+    public void addCost(int cost) {
+        this.cost = this.cost+cost;
     }
+    
+    
 }

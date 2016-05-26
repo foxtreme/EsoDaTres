@@ -80,8 +80,8 @@ public class Entorno {
             System.out.println();
         }
     }
-    /*
-    public void loadFile(String fileName) {
+    
+    /*public void loadFile(String fileName) {
         int matrix[][] = new int[size][size];
         try {
             Scanner input = new Scanner(new File("src/proyectoia/pruebas/" + fileName + ".txt"));
