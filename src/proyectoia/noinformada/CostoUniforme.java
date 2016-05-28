@@ -139,7 +139,6 @@ public class CostoUniforme {
         if (value == 3) {
             node.getState().setSuit(true);
             node.getState().removeItem(node.getState().getPosition());
-            System.out.println("found suit " + node.getState().getMaze()[node.getState().getPosition().x][node.getState().getPosition().y]);
         }
         //check if this is a goal
         boolean goal = node.isItGoal(environment);
@@ -164,7 +163,6 @@ public class CostoUniforme {
                 explored.add(node);
                 //expand the node and tell if it's the goal
                 loop = !expand(node);
-                System.out.println("depth: " + node.getDepth());
                 if (loop) {//if node wasn't the goal
                     Vector<Integer> operators = generateOperators(node);
                     for (int i = 0; i < operators.size(); i++) {
@@ -182,6 +180,8 @@ public class CostoUniforme {
                     }
                     System.out.println("Number of Expanded nodes: " + explored.size());
                     System.out.println("Depth of the tree: " + solution.getDepth());
+                    System.out.println("Found suit?: "+solution.getState().isSuit());
+                    System.out.println("total cost: "+solution.getCost());
                     loop = false;
                 }
             }
@@ -218,13 +218,13 @@ public class CostoUniforme {
         return totalTime;
     }
     
-    
-    /*public static void main(String[] args) {
+    /*
+    public static void main(String[] args) {
 
         CostoUniforme cu = new CostoUniforme("Prueba1");
         cu.uniformCost();
         System.out.println("running time (milisecs): " + cu.getTotalTime());
         
-    }*/
-    
+    }
+    */
 }
