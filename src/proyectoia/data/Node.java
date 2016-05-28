@@ -21,7 +21,7 @@ public class Node {
     private int depth;
     private int cost;
 
-    
+        
     /**
      * Constructor of the Node class
      * @param state a given state for this node
@@ -271,6 +271,10 @@ public class Node {
 
     public void setState(State state) {
         this.state = state;
+    }
+    
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 
     public void addCost(int cost) {

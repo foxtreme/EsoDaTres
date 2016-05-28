@@ -103,7 +103,7 @@ public class Entorno {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Entorno.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }*/
 
     /**
@@ -114,6 +114,45 @@ public class Entorno {
     public Point findRobot(State state) {
 
         return state.getPosition();
+    }
+
+    /**
+     * Gets the closest distance to a goal
+     * @param state
+     * @return 
+     */
+    public int findClosestGoal(State state) {
+        int distanceFromGoal = 0;
+        if (state.getGoalsAchieved() == 0) {//if no items have been found
+            int distanceItem1 = 0, distanceItem2 = 0;
+            int count = 0;
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if ((state.getMaze()[i][j] == 6) && (count == 0)) {//if found first item
+                        distanceItem1 = Math.abs(state.getPosition().x - i)+Math.abs(state.getPosition().y - j);//manhattan distance
+                        count++;
+                    }
+                    if ((state.getMaze()[i][j] == 6) && (count == 1)) {//if found second item
+                        distanceItem2 = Math.abs(state.getPosition().x - i)+Math.abs(state.getPosition().y - j);
+                    }
+                }
+            }
+            if (distanceItem1 <= distanceItem2) {//gets the closest item
+                distanceFromGoal = distanceItem1;
+            } else {
+                distanceFromGoal = distanceItem2;
+            }
+        }
+        if (state.getGoalsAchieved() == 1) {//if an item has already been found
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if (state.getMaze()[i][j] == 6) {
+                        distanceFromGoal = Math.abs(state.getPosition().x - i)+Math.abs(state.getPosition().y - j);
+                    }
+                }
+            }
+        }
+        return distanceFromGoal;
     }
 
     /**
@@ -190,7 +229,7 @@ public class Entorno {
                 U = originalEnv[row - 1][col];
             }//right corner
         }
-
+        //the values of every neighbor in the matrix
         neighbors[0] = L;
         neighbors[1] = U;
         neighbors[2] = R;
@@ -200,10 +239,10 @@ public class Entorno {
 
     /**
      * changes the position of the robot to a given point and restores the
-     * position where it was to its original value
+     * position where it was to its original value - method unused
      *
-     * @param state State of the world to get the robot's current position
      * @param position Point where the robot will move
+     * @return a state where the robot teleports to 
      */
     public State setRobotPosition(Point position) {
         //to
@@ -226,16 +265,6 @@ public class Entorno {
         return neighbors;
     }
 
-    /**
-     * returns the original environment, without the robot
-     *
-     * @return the matrix with the original environment
-     */
-    public int[][] getOriginalEnv() {
-            return originalEnv;
-    }
-
-    
     
     /**
      * *
@@ -283,7 +312,6 @@ public class Entorno {
         return initialState;
     }
 
-    
     public int[] getConventions() {
         return conventions;
     }
@@ -291,5 +319,5 @@ public class Entorno {
     public int getSize() {
         return size;
     }
-    
+
 }
