@@ -21,9 +21,9 @@ public class Node {
     private int depth;
     private int cost;
 
-        
     /**
      * Constructor of the Node class
+     *
      * @param state a given state for this node
      */
     public Node(State state) {
@@ -33,8 +33,9 @@ public class Node {
     }
 
     /**
-     * Parameterized constructor of the Node class 
-     * @param state the state of the world  for this node
+     * Parameterized constructor of the Node class
+     *
+     * @param state the state of the world for this node
      * @param parent the node who is parent of this node
      * @param operator the operator to get to this node
      * @param cost the cost of getting to this node
@@ -62,18 +63,18 @@ public class Node {
      */
     public Point applyOperator(int operator, Entorno environment, State state) {
         Point movement = new Point();
-            if (operator == 4) {//left
-                movement = moveLeft(environment, state);
-            }
-            if (operator == 6) {//right
-                movement = moveRight(environment, state);
-            }
-            if (operator == 8) {//up
-                movement = moveUp(environment, state);
-            }
-            if (operator == 5) {//down
-                movement = moveDown(environment, state);
-            }
+        if (operator == 4) {//left
+            movement = moveLeft(environment, state);
+        }
+        if (operator == 6) {//right
+            movement = moveRight(environment, state);
+        }
+        if (operator == 8) {//up
+            movement = moveUp(environment, state);
+        }
+        if (operator == 5) {//down
+            movement = moveDown(environment, state);
+        }
         return movement;
 
     }
@@ -175,15 +176,16 @@ public class Node {
 
     /**
      * Verifies if this node is equal to any of its ancestors
-     * @return 
+     *
+     * @return
      */
     public boolean isItGrandpa() {
         boolean cycle = false;
         //creates the branch from the root to this node
         List<Node> path = this.getPathFromRoot();
-        path.remove(path.size()-1);
+        path.remove(path.size() - 1);
         // compares to the whole brach
-        for (int i=0;i<path.size() && !cycle;i++) {
+        for (int i = 0; i < path.size() && !cycle; i++) {
             Node thisNode = path.get(i);
             boolean goals = (getState().getGoalsAchieved() == thisNode.getState().getGoalsAchieved());
             boolean suit = (getState().isSuit() == thisNode.getState().isSuit());
@@ -191,6 +193,23 @@ public class Node {
             cycle = (goals && suit && robot);
         }
         return cycle;
+    }
+
+    /**
+     * Verifies if the robot is going back to where it came from
+     * @return whether the robot is going back or not
+     */
+    public boolean goingBack() {
+        boolean grandpa = false;
+        
+        if (getDepth()>1) {
+            boolean goals = (getState().getGoalsAchieved() == getParent().getParent().getState().getGoalsAchieved());
+            boolean suit = (getState().isSuit() == getParent().getParent().getState().isSuit());
+            boolean robot = (getState().getPosition().equals(getParent().getParent().getState().getPosition()));
+            grandpa = (goals && suit && robot);
+            System.out.println("grandpa?: "+grandpa);
+        }
+        return grandpa;
     }
 
     /**
@@ -234,21 +253,21 @@ public class Node {
         }
         System.out.println("=================");
     }
-    
+
     /**
      * Auxiliary function to show the info for the node
      */
-    public void infoNode(){
+    public void infoNode() {
         System.out.println("-----------Node----------");
-        System.out.println("Depth: "+depth);
-        System.out.println("Cost: "+cost);
-        System.out.println("Operator: "+operator);
-        System.out.println("Traje: "+state.isSuit());
-        System.out.println("goals: "+state.getGoalsAchieved());
-        System.out.println("position: "+state.getPosition().toString());
+        System.out.println("Depth: " + depth);
+        System.out.println("Cost: " + cost);
+        System.out.println("Operator: " + operator);
+        System.out.println("Traje: " + state.isSuit());
+        System.out.println("goals: " + state.getGoalsAchieved());
+        System.out.println("position: " + state.getPosition().toString());
         System.out.println("-------------------------");
     }
-    
+
     public Node getParent() {
         return parent;
     }
@@ -272,14 +291,13 @@ public class Node {
     public void setState(State state) {
         this.state = state;
     }
-    
+
     public void setCost(int cost) {
         this.cost = cost;
     }
 
     public void addCost(int cost) {
-        this.cost = this.cost+cost;
+        this.cost = this.cost + cost;
     }
-    
-    
+
 }
