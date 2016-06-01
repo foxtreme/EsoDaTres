@@ -20,6 +20,7 @@ public class Node {
     private int operator;//4:left, 8:up, 6:right, 5:down
     private int depth;
     private int cost;
+    private int heuristic;
 
     /**
      * Constructor of the Node class
@@ -298,6 +299,15 @@ public class Node {
 
     public void addCost(int cost) {
         this.cost = this.cost + cost;
+    }
+    
+    
+    public int getHeuristic() {
+        return heuristic;
+    }
+
+    public void setHeuristic(int heuristic) {
+        this.heuristic = heuristic;
     }
 
 }
