@@ -53,68 +53,20 @@ public class Profundidad {
     private Vector<Integer> generateOperators(Node node) {
         Vector<Integer> operators = new Vector<Integer>();
         int neighbors[] = environment.getNeighbors(node.getState());
-        if (node.isItRoot()) {
-            if (neighbors[0] != 1) {
-                operators.add(4);
-            }//left
-            if (neighbors[2] != 1) {
-                operators.add(6);
-            }//right
-            if (neighbors[1] != 1) {
-                operators.add(8);
-            }//up
-            if (neighbors[3] != 1) {
-                operators.add(5);
-            }//down
-            
-            
-            
-        } else {
-            Point posNode = node.getState().getPosition();
-            Point posParent = node.getParent().getState().getPosition();
-            Point neighbor = new Point();
-            int row, col;
-
-            if (neighbors[0] != 1) {
-                row = posNode.x;
-                col = (posNode.y - 1);
-                neighbor.setLocation(row, col);
-                if (!neighbor.equals(posParent)) {
-                    operators.add(4);
-                }
-
-            }
-            if (neighbors[2] != 1) {
-                row = posNode.x;
-                col = (posNode.y) + 1;
-                neighbor.setLocation(row, col);
-                if (!neighbor.equals(posParent)) {
-                    operators.add(6);
-                }
-
-            }
-            
-            if (neighbors[1] != 1) {
-                row = (posNode.x) - 1;
-                col = posNode.y;
-                neighbor.setLocation(row, col);
-                if (!neighbor.equals(posParent)) {
-                    operators.add(8);
-                }
-
-            }
-            if (neighbors[3] != 1) {
-                row = (posNode.x) + 1;
-                col = posNode.y;
-                neighbor.setLocation(row, col);
-                if (!neighbor.equals(posParent)) {
-                    operators.add(5);
-                }
-            }
-            
-            
-        }
-
+        if (neighbors[0] != 1) {
+            operators.add(4);
+        }//left
+        if (neighbors[2] != 1) {
+            operators.add(6);
+        }//right       
+        
+        if (neighbors[1] != 1) {
+            operators.add(8);
+        }//up
+        
+        if (neighbors[3] != 1) {
+            operators.add(5);
+        }//down
         return operators;
     }
 
@@ -130,6 +82,7 @@ public class Profundidad {
         //recover the status data of the parent
         Node child = null;
         Point nextPos = parent.applyOperator(operator, environment, parent.getState());
+        
         if (nextPos != null) {
             int[][] maze = new int[environment.getSize()][environment.getSize()];
             for (int i = 0; i < environment.getSize(); i++) {
@@ -145,9 +98,13 @@ public class Profundidad {
             state.setSuit(suit);
             //creates the child node with the calculated state        
             child = new Node(state, parent, operator, 1);
+            
+        }
+        //System.out.println("cycling?: "+child.isItGrandpa());
+        if(child.isItGrandpa()){
+           child=null; 
         }
         return child;
-
     }
 
     public boolean expand(Node node) {
@@ -158,7 +115,7 @@ public class Profundidad {
         if (value == 6) {
             node.getState().setGoalsAchieved(1);
             node.getState().removeItem(node.getState().getPosition());
-
+            System.out.println("found goal " + node.getState().getPosition().toString());
         }
         if (value == 3) {
             node.getState().setSuit(true);
@@ -177,54 +134,48 @@ public class Profundidad {
     public void depthFirst() {
 
         long startTime = System.currentTimeMillis();
-        boolean loop = true;
-        while (loop) {
+        boolean end=false;
+        while (frontier.size()>0 && (!end)) {
             //if there are no more nodes to expand, end it
-            if (frontier.isEmpty()) {
-                loop = false;
-            } else {
-                //get the first node in the frotier
-                Node node = frontier.remove(0);
-
-                //add the node to the expanded list
-                explored.add(node);
-                //expand the node and tell if it's the goal
-                loop = !expand(node);
-                System.out.println("depth: " + node.getDepth());
-                int j=0;
-                if (loop) {//if node wasn't the goal
-                    Vector<Integer> operators = generateOperators(node);
-                    for (int i = 0; i < operators.size(); i++) {
-                        j=operators.size()-1;
-                        Node child = childNode(node, operators.get(j));
-                        if (child != null) {
-                            frontier.add(0, child);
-                        }
-
+            Node node = frontier.remove(0);
+            //add the node to the expanded list
+            explored.add(node);
+            //expand the node and tell if it's the goal
+            end = expand(node);
+            System.out.println("depth: " + node.getDepth());
+            if (!end) {//if node wasn't the goal
+                Vector<Integer> operators = generateOperators(node);
+                for (int i = 0; i < operators.size(); i++) {
+                    Node child = childNode(node, operators.get(i));
+                    //System.out.println("child to operator: "+);
+                    if (child != null) {
+                        frontier.add(0, child);
                     }
-                    
-                } else {
-                    List<Node> path = solution.getPathFromRoot();
-                    for (int i = 0; i < path.size(); i++) {
-                        Point pos = this.getEnvironment().findRobot(path.get(i).getState());
-                        System.out.println((int) pos.getX() + ", " + (int) pos.getY());
-                    }
-                    System.out.println("Number of Expanded nodes: " + explored.size());
-                    System.out.println("Depth of the tree: " + solution.getDepth());
-                    loop = false;
                 }
+
+            } else {
+                List<Node> path = solution.getPathFromRoot();
+                for (int i = 0; i < path.size(); i++) {
+                    Point pos = this.getEnvironment().findRobot(path.get(i).getState());
+                    System.out.println((int) pos.getX() + ", " + (int) pos.getY());
+                }
+                System.out.println("Number of Expanded nodes: " + explored.size());
+                System.out.println("Depth of the tree: " + solution.getDepth());
+                
             }
         }
         long endTime = System.currentTimeMillis();
-        totalTime = endTime - startTime;
-
+        totalTime  = endTime - startTime;
     }
+    
 
-    /**
-     *
-     * @return
-     */
-    public Node getRoot() {
+
+
+/**
+ *
+ * @return
+ */
+public Node getRoot() {
         return root;
     }
 
@@ -247,6 +198,12 @@ public class Profundidad {
     public long getTotalTime() {
         return totalTime;
     }
+    /*
+    public static void main(String[] args) {
 
-   
+        Profundidad ppa = new Profundidad("Prueba1");
+        ppa.depthFirst();
+        System.out.println("running time (milisecs): "+ppa.getTotalTime());
+        
+    }*/
 }

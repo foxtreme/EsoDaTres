@@ -7,6 +7,9 @@ package proyectoia.noinformada;
 
 import java.awt.Point;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 import proyectoia.data.Entorno;
@@ -17,17 +20,17 @@ import proyectoia.data.State;
  *
  * @author chris
  */
-public class PreferentePorAmplitud {
+public class CostoUniforme {
 
     private Node root, solution;
     private Entorno environment;
-    private Vector<Node> frontier, explored;
+    private List<Node> frontier, explored;
     private long totalTime;
 
     /**
      * Constructor of this class
      */
-    public PreferentePorAmplitud(File fileMundo) {
+    public CostoUniforme(File fileMundo) {
         environment = new Entorno();
         environment.loadFile(fileMundo);
         //initial State
@@ -35,10 +38,10 @@ public class PreferentePorAmplitud {
         //root node - state, parent , operator , cost
         root = new Node(initialState, null, 0, 0);
         //this will contain the solution
-        frontier = new Vector<Node>();
+        frontier = new ArrayList<Node>();
         frontier.add(root);
         //this will contain the vectors expanded
-        explored = new Vector<Node>();
+        explored = new ArrayList<Node>();
         //solution is null initially
         solution = null;
     }
@@ -69,6 +72,19 @@ public class PreferentePorAmplitud {
     }
 
     /**
+     * Sorts the frontier and puts in front the nodes with less cost so they are expanded first
+     * @param nodeList 
+     */
+    public void sort(List<Node> nodeList) {
+        Collections.sort(nodeList, new Comparator<Node>() {
+            @Override
+            public int compare(Node n1, Node n2) {
+                return (n1.getCost()<n2.getCost())?-1:(n1.getCost()>n2.getCost())?1:0;
+            }
+        });
+    }
+
+    /**
      * Creates a child with a given parent and an operator
      *
      * @param parent Node parent of this child
@@ -77,8 +93,9 @@ public class PreferentePorAmplitud {
      */
     public Node childNode(Node parent, int operator) {
         Node child = null;
+        //gets the position for the next movement according to the operator
         Point nextPos = parent.applyOperator(operator, environment, parent.getState());
-        if (nextPos != null) {
+        if (nextPos != null) {//if the move can be made
             int[][] maze = new int[environment.getSize()][environment.getSize()];
             for (int i = 0; i < environment.getSize(); i++) {
                 for (int j = 0; j < environment.getSize(); j++) {
@@ -87,16 +104,24 @@ public class PreferentePorAmplitud {
             }
             int goalsParent = parent.getState().getGoalsAchieved();
             boolean suit = parent.getState().isSuit();
-            //gets the position for the next movement according to the operator
             //create the new state to asign
             State state = new State(nextPos, maze, goalsParent);
             state.setSuit(suit);
             //creates the child node with the calculated state        
             child = new Node(state, parent, operator, 1);
         }
-        //System.out.println("cycling?: "+child.isItGrandpa());
-        if (child.isItGrandpa()) {
+        if (child.isItGrandpa()) {//if the child node has been created before, sets it to null
             child = null;
+        }else{//if the child can be created calculates the cost of being in the new cell and adds it 
+            int cellType = child.getPositionValue(environment);
+            int movementCost=0;
+            if(cellType==4 && (!child.getState().isSuit())){
+                movementCost=3;
+            }
+            if(cellType==5 && (!child.getState().isSuit())){
+                movementCost=6;
+            }
+            child.addCost(movementCost);
         }
         return child;
     }
@@ -114,7 +139,6 @@ public class PreferentePorAmplitud {
         if (value == 3) {
             node.getState().setSuit(true);
             node.getState().removeItem(node.getState().getPosition());
-            System.out.println("found suit " + node.getState().getMaze()[node.getState().getPosition().x][node.getState().getPosition().y]);
         }
         //check if this is a goal
         boolean goal = node.isItGoal(environment);
@@ -124,7 +148,7 @@ public class PreferentePorAmplitud {
         return goal;
     }
 
-    public void breadthFirst() {
+    public void uniformCost() {
         long startTime = System.currentTimeMillis();
         boolean loop = true;
         while (loop) {
@@ -133,13 +157,12 @@ public class PreferentePorAmplitud {
                 loop = false;
             } else {
                 //get the first node in the frotier
+                sort(frontier);
                 Node node = frontier.remove(0);
-
                 //add the node to the expanded list
                 explored.add(node);
                 //expand the node and tell if it's the goal
                 loop = !expand(node);
-                System.out.println("depth: " + node.getDepth());
                 if (loop) {//if node wasn't the goal
                     Vector<Integer> operators = generateOperators(node);
                     for (int i = 0; i < operators.size(); i++) {
@@ -149,7 +172,6 @@ public class PreferentePorAmplitud {
                         }
 
                     }
-                    //System.out.println("cuantos nodos tiene frontier: "+frontier.size());
                 } else {
                     List<Node> path = solution.getPathFromRoot();
                     for (int i = 0; i < path.size(); i++) {
@@ -158,6 +180,8 @@ public class PreferentePorAmplitud {
                     }
                     System.out.println("Number of Expanded nodes: " + explored.size());
                     System.out.println("Depth of the tree: " + solution.getDepth());
+                    System.out.println("Found suit?: "+solution.getState().isSuit());
+                    System.out.println("total cost: "+solution.getCost());
                     loop = false;
                 }
             }
@@ -178,11 +202,11 @@ public class PreferentePorAmplitud {
         return environment;
     }
 
-    public Vector<Node> getFrontier() {
+    public List<Node> getFrontier() {
         return frontier;
     }
 
-    public Vector<Node> getExplored() {
+    public List<Node> getExplored() {
         return explored;
     }
 
@@ -193,13 +217,14 @@ public class PreferentePorAmplitud {
     public long getTotalTime() {
         return totalTime;
     }
+    
     /*
     public static void main(String[] args) {
 
-        PreferentePorAmplitud ppa = new PreferentePorAmplitud("Prueba1");
-        ppa.breadthFirst();
-        System.out.println("running time (milisecs): " + ppa.getTotalTime());
-
+        CostoUniforme cu = new CostoUniforme("Prueba1");
+        cu.uniformCost();
+        System.out.println("running time (milisecs): " + cu.getTotalTime());
+        
     }
     */
 }
