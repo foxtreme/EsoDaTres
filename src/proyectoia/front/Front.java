@@ -37,6 +37,8 @@ public class Front extends javax.swing.JFrame {
         labelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("../images/banner.png")));
         fc = new FrontController();//instancio el controlador
         buscando=true;//variable manipuladora del Boton Ejecutar - ejecutarJButton
+        infoLabel.setVisible(false);
+        recorridoButton.setVisible(false);
 
         //asigno un filtro de busquda de archivos al jFileChooser
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (*.txt)", "txt");
@@ -75,6 +77,9 @@ public class Front extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
+        jSeparator1 = new javax.swing.JSeparator();
+        infoLabel = new javax.swing.JLabel();
+        recorridoButton = new javax.swing.JButton();
 
         cargarRutaMundoJFC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,6 +149,11 @@ public class Front extends javax.swing.JFrame {
         });
 
         algoritmosJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Amplitud", "Costo Uniforme", "Profundidad" }));
+        algoritmosJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                algoritmosJComboBoxActionPerformed(evt);
+            }
+        });
 
         ejecutarJButton.setText("Buscar");
         ejecutarJButton.setEnabled(false);
@@ -181,6 +191,11 @@ public class Front extends javax.swing.JFrame {
 
         jLabel3.setText("Tiempo de Cómputo (ms):");
 
+        infoLabel.setText("Búsqueda Exitosa!");
+
+        recorridoButton.setText("Ver recorrido");
+        recorridoButton.setEnabled(false);
+
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
         panelContent.setLayout(panelContentLayout);
         panelContentLayout.setHorizontalGroup(
@@ -191,7 +206,7 @@ public class Front extends javax.swing.JFrame {
                     .addGroup(panelContentLayout.createSequentialGroup()
                         .addComponent(scrollMundo, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator2)
                             .addGroup(panelContentLayout.createSequentialGroup()
                                 .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,7 +221,12 @@ public class Front extends javax.swing.JFrame {
                                 .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(tiempoComputo, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                                     .addComponent(nodosExpandidos)
-                                    .addComponent(profundidad)))))
+                                    .addComponent(profundidad)))
+                            .addComponent(jSeparator1)
+                            .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panelContentLayout.createSequentialGroup()
+                                .addComponent(recorridoButton)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(panelContentLayout.createSequentialGroup()
                         .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldRutaMundo)
@@ -256,6 +276,12 @@ public class Front extends javax.swing.JFrame {
                         .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tiempoComputo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(infoLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(recorridoButton)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -389,6 +415,14 @@ public class Front extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ejecutarJButtonActionPerformed
 
+    private void algoritmosJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algoritmosJComboBoxActionPerformed
+        //settear campos
+        
+        nodosExpandidos.setText("");//nodos expandidos
+        profundidad.setText("");//profundidad
+        tiempoComputo.setText("");//tiempo en milisegundos
+    }//GEN-LAST:event_algoritmosJComboBoxActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -460,9 +494,11 @@ public class Front extends javax.swing.JFrame {
     private javax.swing.JFileChooser cargarRutaMundoJFC;
     private javax.swing.JButton editarMundoJButton;
     private javax.swing.JButton ejecutarJButton;
+    private javax.swing.JLabel infoLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextFieldRutaMundo;
     private javax.swing.JLabel labelLogo;
@@ -471,6 +507,7 @@ public class Front extends javax.swing.JFrame {
     private javax.swing.JPanel panelLogo;
     private javax.swing.JPanel panelMundo;
     private javax.swing.JTextField profundidad;
+    private javax.swing.JButton recorridoButton;
     private javax.swing.JScrollPane scrollMundo;
     private javax.swing.JTextField tiempoComputo;
     private javax.swing.JLabel tipoBusquedaJLabel;

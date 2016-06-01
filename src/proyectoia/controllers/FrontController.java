@@ -11,6 +11,7 @@ import proyectoia.data.Core;
 import proyectoia.data.Entorno;
 import proyectoia.noinformada.PreferentePorAmplitud;
 import proyectoia.noinformada.Profundidad;
+import proyectoia.data.EjecutarBusqueda;
 
 /**
  *
@@ -40,6 +41,10 @@ public class FrontController {
     public Profundidad Profundidad(File fileMundo){
         profundidad =   new Profundidad(fileMundo);
         return profundidad;
+    }
+    
+    public void EjecutarBusqueda(){
+        new EjecutarBusqueda();
     }
     
     
