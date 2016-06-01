@@ -390,7 +390,10 @@ public class Front extends javax.swing.JFrame {
                         
                     break;
                 case "Costo Uniforme":
-                        
+                        fc.CostoUniforme(new File(jTextFieldRutaMundo.getText())).uniformCost();
+                        nodosExpandidos.setText(""+fc.getCosto().getExplored().size());//nodos expandidos
+                        profundidad.setText(""+fc.getCosto().getSolution().getDepth());//profundidad
+                        tiempoComputo.setText(""+fc.getCosto().getTotalTime());//tiempo en milisegundos
                     break;
                 case "Profundidad":
                         fc.Profundidad(new File(jTextFieldRutaMundo.getText())).depthFirst();
@@ -400,8 +403,20 @@ public class Front extends javax.swing.JFrame {
                         tiempoComputo.setText(""+fc.getProfundidad().getTotalTime());//tiempo en milisegundos
                     break;
                 case "Avara":
+                        fc.Avara(new File(jTextFieldRutaMundo.getText())).greedy();
+                        
+                        nodosExpandidos.setText(""+fc.getAvara().getExplored().size());//nodos expandidos
+                        profundidad.setText(""+fc.getAvara().getSolution().getDepth());//profundidad
+                        tiempoComputo.setText(""+fc.getAvara().getTotalTime());//tiempo en milisegundos
+                    
                     break;
                 case "A*":
+                        fc.AStar(new File(jTextFieldRutaMundo.getText())).aStar();
+                        
+                        nodosExpandidos.setText(""+fc.getaStar().getExplored().size());//nodos expandidos
+                        profundidad.setText(""+fc.getaStar().getSolution().getDepth());//profundidad
+                        tiempoComputo.setText(""+fc.getaStar().getTotalTime());//tiempo en milisegundos
+                        
                     break;
                 default: 
                     JOptionPane.showMessageDialog(null, "No se ha seleccionado ningun algoritmo", "Información", JOptionPane.INFORMATION_MESSAGE);

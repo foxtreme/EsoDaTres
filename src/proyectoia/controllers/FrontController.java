@@ -12,6 +12,9 @@ import proyectoia.data.Entorno;
 import proyectoia.noinformada.PreferentePorAmplitud;
 import proyectoia.noinformada.Profundidad;
 import proyectoia.data.EjecutarBusqueda;
+import proyectoia.informada.Aestrella;
+import proyectoia.informada.Avara;
+import proyectoia.noinformada.CostoUniforme;
 
 /**
  *
@@ -21,6 +24,9 @@ public class FrontController {
     
     PreferentePorAmplitud pAmplitud;
     Profundidad profundidad;
+    CostoUniforme costo;
+    Avara avara;
+    Aestrella aStar;
 
     public FrontController() {
     }
@@ -41,6 +47,20 @@ public class FrontController {
     public Profundidad Profundidad(File fileMundo){
         profundidad =   new Profundidad(fileMundo);
         return profundidad;
+    }
+    public CostoUniforme CostoUniforme(File fileMundo){
+        costo = new CostoUniforme(fileMundo);
+        return costo;
+    }
+    
+    public Avara Avara(File fileMundo){
+        avara = new Avara(fileMundo);
+        return avara;
+    }
+    
+    public Aestrella AStar(File fileMundo){
+        aStar = new Aestrella(fileMundo);
+        return aStar;
     }
     
     public void EjecutarBusqueda(){
@@ -65,6 +85,30 @@ public class FrontController {
 
     public void setProfundidad(Profundidad profundidad) {
         this.profundidad = profundidad;
+    }
+
+    public CostoUniforme getCosto() {
+        return costo;
+    }
+
+    public void setCosto(CostoUniforme costo) {
+        this.costo = costo;
+    }
+
+    public Avara getAvara() {
+        return avara;
+    }
+
+    public void setAvara(Avara avara) {
+        this.avara = avara;
+    }
+
+    public Aestrella getaStar() {
+        return aStar;
+    }
+
+    public void setaStar(Aestrella aStar) {
+        this.aStar = aStar;
     }
     
     

@@ -112,7 +112,7 @@ public class Avara {
             //creates the child node with the calculated state        
             child = new Node(state, parent, operator, 1);
         }
-        if (child.isItGrandpa()) {//if the child node has been created before, sets it to null
+        if (child.goingBack()) {//if the child node has been created before, sets it to null
             child = null;
         }else{
             int distance = this.getEnvironment().findClosestGoal(child.getState());

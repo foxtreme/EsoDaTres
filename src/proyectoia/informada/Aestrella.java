@@ -116,7 +116,7 @@ public class Aestrella {
             //creates the child node with the calculated state        
             child = new Node(state, parent, operator, 1);
         }
-        if (child.isItGrandpa()) {//if the child node has been created before, sets it to null
+        if (child.goingBack()) {//if the child node has been created before, sets it to null
             child = null;
         }else{//if the child can be created calculates the cost of being in the new cell and adds it 
             int cellType = child.getPositionValue(environment);

@@ -95,7 +95,7 @@ public class PreferentePorAmplitud {
             child = new Node(state, parent, operator, 1);
         }
         //System.out.println("cycling?: "+child.isItGrandpa());
-        if (child.isItGrandpa()) {
+        if (child.goingBack()) {
             child = null;
         }
         return child;
