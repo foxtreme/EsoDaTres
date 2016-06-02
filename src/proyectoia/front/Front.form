@@ -136,8 +136,8 @@
                                   </Group>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="tiempoComputo" pref="35" max="32767" attributes="0"/>
-                                      <Component id="nodosExpandidos" max="32767" attributes="0"/>
                                       <Component id="profundidad" max="32767" attributes="0"/>
+                                      <Component id="nodosExpandidos" alignment="1" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
@@ -365,8 +365,10 @@
         <Component class="javax.swing.JButton" name="recorridoButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Ver recorrido"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="recorridoButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

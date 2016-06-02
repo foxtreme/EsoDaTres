@@ -7,15 +7,19 @@ package proyectoia.front;
 
 import java.awt.Desktop;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.io.File;
 import static java.lang.Math.sqrt;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import proyectoia.controllers.FrontController;
+import proyectoia.data.Node;
 
 /**
  *
@@ -28,6 +32,8 @@ public class Front extends javax.swing.JFrame {
      */
     FrontController fc;
     public boolean buscando;
+    Map miMundo;
+    int[][] originalMap;
 
     //@SuppressWarnings("unchecked")
     public Front() {
@@ -36,13 +42,15 @@ public class Front extends javax.swing.JFrame {
         //instancio controladores
         labelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("../images/banner.png")));
         fc = new FrontController();//instancio el controlador
-        buscando=true;//variable manipuladora del Boton Ejecutar - ejecutarJButton
-        infoLabel.setVisible(false);
-        recorridoButton.setVisible(false);
+        buscando = true;//variable manipuladora del Boton Ejecutar - ejecutarJButton
+        //infoLabel.setVisible(false);
+        //recorridoButton.setVisible(false);
 
         //asigno un filtro de busquda de archivos al jFileChooser
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (*.txt)", "txt");
         cargarRutaMundoJFC.setFileFilter(filtro);
+        
+        miMundo = new HashMap();
 
     }
 
@@ -194,7 +202,11 @@ public class Front extends javax.swing.JFrame {
         infoLabel.setText("Búsqueda Exitosa!");
 
         recorridoButton.setText("Ver recorrido");
-        recorridoButton.setEnabled(false);
+        recorridoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recorridoButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
         panelContent.setLayout(panelContentLayout);
@@ -220,8 +232,8 @@ public class Front extends javax.swing.JFrame {
                                         .addGap(5, 5, 5)))
                                 .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(tiempoComputo, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                                    .addComponent(nodosExpandidos)
-                                    .addComponent(profundidad)))
+                                    .addComponent(profundidad)
+                                    .addComponent(nodosExpandidos, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addComponent(jSeparator1)
                             .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(panelContentLayout.createSequentialGroup()
@@ -308,7 +320,7 @@ public class Front extends javax.swing.JFrame {
     private void cargarRutaMundoJFCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarRutaMundoJFCActionPerformed
     cargarRutaMundoJFC = (JFileChooser) evt.getSource();
     String comando = evt.getActionCommand();
-    Map miMundo = new HashMap();
+    
 
     if (comando.equals(JFileChooser.APPROVE_SELECTION)) {
 
@@ -320,14 +332,16 @@ public class Front extends javax.swing.JFrame {
 
         //cargo el mundo inicial
         //creo el mundo y obtengo un Map con todos los label con el icono
-        miMundo = fc.getMundo(fc.getMundoMatrix(archivoSeleccionado));
         
+        originalMap = fc.getMundoMatrix(archivoSeleccionado);
+        miMundo = fc.getMundo(originalMap);
+
         //cargo el mundo en el panel a partir del hash con los iconos indexados
         setMundoPanel(miMundo);
-        
+
         //habilito el boton ejecutar
         ejecutarJButton.setEnabled(true);
-        
+
         //oculto el JFileChooser
         cargarRutaMundoJFC.hide();
         cargarMundoJDialog.hide();
@@ -336,8 +350,8 @@ public class Front extends javax.swing.JFrame {
         cargarRutaMundoJFC.hide();
         cargarMundoJDialog.hide();
     }
-    
-        
+
+
     }//GEN-LAST:event_cargarRutaMundoJFCActionPerformed
 
     private void cargarMundoJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarMundoJButtonActionPerformed
@@ -363,67 +377,67 @@ public class Front extends javax.swing.JFrame {
 
     private void busquedaJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaJComboBoxActionPerformed
         String index = busquedaJComboBox.getSelectedItem().toString();
-        
-        if(index.equals("No Informada")){
+
+        if (index.equals("No Informada")) {
             algoritmosJComboBox.removeAllItems();
             algoritmosJComboBox.addItem("Amplitud");
             algoritmosJComboBox.addItem("Costo Uniforme");
-            algoritmosJComboBox.addItem("Profundidad");            
-        }else if(index.equals("Informada")){
+            algoritmosJComboBox.addItem("Profundidad");
+        } else if (index.equals("Informada")) {
             algoritmosJComboBox.removeAllItems();
             algoritmosJComboBox.addItem("Avara");
             algoritmosJComboBox.addItem("A*");
         }
-        
+
     }//GEN-LAST:event_busquedaJComboBoxActionPerformed
 
     private void ejecutarJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarJButtonActionPerformed
-        if(buscando){
-            switch(algoritmosJComboBox.getSelectedItem().toString()){
+        if (buscando) {
+            switch (algoritmosJComboBox.getSelectedItem().toString()) {
                 case "Amplitud":
-                    
-                        fc.Amplitud(new File(jTextFieldRutaMundo.getText())).breadthFirst();
-                        
-                        nodosExpandidos.setText(""+fc.getpAmplitud().getExplored().size());//nodos expandidos
-                        profundidad.setText(""+fc.getpAmplitud().getSolution().getDepth());//profundidad
-                        tiempoComputo.setText(""+fc.getpAmplitud().getTotalTime());//tiempo en milisegundos
-                        
+
+                    fc.Amplitud(new File(jTextFieldRutaMundo.getText())).breadthFirst();
+
+                    nodosExpandidos.setText("" + fc.getpAmplitud().getExplored().size());//nodos expandidos
+                    profundidad.setText("" + fc.getpAmplitud().getSolution().getDepth());//profundidad
+                    tiempoComputo.setText("" + fc.getpAmplitud().getTotalTime());//tiempo en milisegundos
+
                     break;
                 case "Costo Uniforme":
-                        fc.CostoUniforme(new File(jTextFieldRutaMundo.getText())).uniformCost();
-                        nodosExpandidos.setText(""+fc.getCosto().getExplored().size());//nodos expandidos
-                        profundidad.setText(""+fc.getCosto().getSolution().getDepth());//profundidad
-                        tiempoComputo.setText(""+fc.getCosto().getTotalTime());//tiempo en milisegundos
+                    fc.CostoUniforme(new File(jTextFieldRutaMundo.getText())).uniformCost();
+                    nodosExpandidos.setText("" + fc.getCosto().getExplored().size());//nodos expandidos
+                    profundidad.setText("" + fc.getCosto().getSolution().getDepth());//profundidad
+                    tiempoComputo.setText("" + fc.getCosto().getTotalTime());//tiempo en milisegundos
                     break;
                 case "Profundidad":
-                        fc.Profundidad(new File(jTextFieldRutaMundo.getText())).depthFirst();
-                        
-                        nodosExpandidos.setText(""+fc.getProfundidad().getExplored().size());//nodos expandidos
-                        profundidad.setText(""+fc.getProfundidad().getSolution().getDepth());//profundidad
-                        tiempoComputo.setText(""+fc.getProfundidad().getTotalTime());//tiempo en milisegundos
+                    fc.Profundidad(new File(jTextFieldRutaMundo.getText())).depthFirst();
+
+                    nodosExpandidos.setText("" + fc.getProfundidad().getExplored().size());//nodos expandidos
+                    profundidad.setText("" + fc.getProfundidad().getSolution().getDepth());//profundidad
+                    tiempoComputo.setText("" + fc.getProfundidad().getTotalTime());//tiempo en milisegundos
                     break;
                 case "Avara":
-                        fc.Avara(new File(jTextFieldRutaMundo.getText())).greedy();
-                        
-                        nodosExpandidos.setText(""+fc.getAvara().getExplored().size());//nodos expandidos
-                        profundidad.setText(""+fc.getAvara().getSolution().getDepth());//profundidad
-                        tiempoComputo.setText(""+fc.getAvara().getTotalTime());//tiempo en milisegundos
-                    
+                    fc.Avara(new File(jTextFieldRutaMundo.getText())).greedy();
+
+                    nodosExpandidos.setText("" + fc.getAvara().getExplored().size());//nodos expandidos
+                    profundidad.setText("" + fc.getAvara().getSolution().getDepth());//profundidad
+                    tiempoComputo.setText("" + fc.getAvara().getTotalTime());//tiempo en milisegundos
+
                     break;
                 case "A*":
-                        fc.AStar(new File(jTextFieldRutaMundo.getText())).aStar();
-                        
-                        nodosExpandidos.setText(""+fc.getaStar().getExplored().size());//nodos expandidos
-                        profundidad.setText(""+fc.getaStar().getSolution().getDepth());//profundidad
-                        tiempoComputo.setText(""+fc.getaStar().getTotalTime());//tiempo en milisegundos
-                        
+                    fc.AStar(new File(jTextFieldRutaMundo.getText())).aStar();
+
+                    nodosExpandidos.setText("" + fc.getaStar().getExplored().size());//nodos expandidos
+                    profundidad.setText("" + fc.getaStar().getSolution().getDepth());//profundidad
+                    tiempoComputo.setText("" + fc.getaStar().getTotalTime());//tiempo en milisegundos
+
                     break;
-                default: 
+                default:
                     JOptionPane.showMessageDialog(null, "No se ha seleccionado ningun algoritmo", "Información", JOptionPane.INFORMATION_MESSAGE);
             }
             buscando = false;
             ejecutarJButton.setText("Detener");
-        }else if(!buscando){
+        } else if (!buscando) {
             //detener la ejecucion 
             buscando = true;
             ejecutarJButton.setText("Buscar");
@@ -432,11 +446,47 @@ public class Front extends javax.swing.JFrame {
 
     private void algoritmosJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algoritmosJComboBoxActionPerformed
         //settear campos
-        
+
         nodosExpandidos.setText("");//nodos expandidos
         profundidad.setText("");//profundidad
         tiempoComputo.setText("");//tiempo en milisegundos
     }//GEN-LAST:event_algoritmosJComboBoxActionPerformed
+
+    private void recorridoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recorridoButtonActionPerformed
+        List<Node> path = fc.getpAmplitud().getSolution().getPathFromRoot();
+
+        for (int i = 0; i < path.size()-1; i++) {
+            Point pos = fc.getpAmplitud().getEnvironment().findRobot(path.get(i).getState());
+            Point pos2 = fc.getpAmplitud().getEnvironment().findRobot(path.get(i+1).getState());
+            String index1 = (int)pos.getX() + "" + (int) pos.getY();
+            String index2 = (int)pos2.getX() + "" + (int) pos2.getY();
+            
+            ImageIcon robot = new javax.swing.ImageIcon(getClass().getResource("../images/2.png"));
+            JLabel mb = new JLabel(robot);
+            ImageIcon original;
+            if(originalMap[(int)pos.getX()][(int)pos.getY()] == 3 || originalMap[(int)pos.getX()][(int)pos.getY()] == 6 || originalMap[(int)pos.getX()][(int)pos.getY()] == 2){
+                original = new javax.swing.ImageIcon(getClass().getResource("../images/0.png"));
+            }else{
+                original = new javax.swing.ImageIcon(getClass().getResource("../images/"+originalMap[(int)pos.getX()][(int)pos.getY()]+".png"));
+            }
+            
+            JLabel ol = new JLabel(original);
+            
+            mb.setSize(32, 32);
+            mb.setVisible(true);
+            mb.setToolTipText(index2);
+            
+            ol.setSize(32, 32);
+            ol.setVisible(true);
+            ol.setToolTipText(index1);
+            
+            miMundo.replace(index1,ol);
+            miMundo.replace(index2,mb);
+            
+            setMundoPanel(miMundo);
+            
+        }
+    }//GEN-LAST:event_recorridoButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -472,33 +522,34 @@ public class Front extends javax.swing.JFrame {
             }
         });
     }
-    
-    /***
-     * carga el mundo en el panel
-     * @param miMundo 
-     */
-    public void setMundoPanel(Map miMundo){
-        int size = (int) sqrt(miMundo.size());
-    panelMundo.setLayout(new GridLayout(size, size));
 
-    //remover contenido
-    if (miMundo != null) {
-        panelMundo.removeAll();
-    }
-    //Cargo el mundo en panelMundo
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            JLabel lb = (JLabel) miMundo.get(i + "" + j);
-            lb.setSize(32, 32);
-            lb.setVisible(true);
-            panelMundo.add(lb);
+    /**
+     * *
+     * carga el mundo en el panel
+     *
+     * @param miMundo
+     */
+    public void setMundoPanel(Map miMundo) {
+        int size = (int) sqrt(miMundo.size());
+        panelMundo.setLayout(new GridLayout(size, size));
+
+        //remover contenido
+        if (miMundo != null) {
+            panelMundo.removeAll();
         }
-    }
-   
-    
-    panelMundo.setVisible(true);
-    panelMundo.repaint();
-        
+        //Cargo el mundo en panelMundo
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                JLabel lb = (JLabel) miMundo.get(i + "" + j);
+                lb.setSize(32, 32);
+                lb.setVisible(true);
+                panelMundo.add(lb);
+            }
+        }
+
+        panelMundo.setVisible(true);
+        panelMundo.repaint();
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
