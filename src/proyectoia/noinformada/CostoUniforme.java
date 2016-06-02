@@ -29,6 +29,7 @@ public class CostoUniforme {
 
     /**
      * Constructor of this class
+     * @param fileMundo file containing the world to be tested
      */
     public CostoUniforme(File fileMundo) {
         environment = new Entorno();
@@ -73,7 +74,7 @@ public class CostoUniforme {
 
     /**
      * Sorts the frontier and puts in front the nodes with less cost so they are expanded first
-     * @param nodeList 
+     * @param nodeList List of nodes to be sorted by their cost
      */
     public void sort(List<Node> nodeList) {
         Collections.sort(nodeList, new Comparator<Node>() {

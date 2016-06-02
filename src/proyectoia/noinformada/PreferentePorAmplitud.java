@@ -26,6 +26,7 @@ public class PreferentePorAmplitud {
 
     /**
      * Constructor of this class
+     * @param fileMundo file containing the world to be tested
      */
     public PreferentePorAmplitud(File fileMundo) {
         environment = new Entorno();

@@ -178,7 +178,7 @@ public class Node {
     /**
      * Verifies if this node is equal to any of its ancestors
      *
-     * @return
+     * @return true if this node is any of its own ancestors
      */
     public boolean isItGrandpa() {
         boolean cycle = false;

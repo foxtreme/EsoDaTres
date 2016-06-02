@@ -26,6 +26,7 @@ public class Profundidad {
 
     /**
      * Constructor of this class
+     * @param fileMundo file containing the world to be tested
      */
     public Profundidad(File fileMundo) {
         environment = new Entorno();

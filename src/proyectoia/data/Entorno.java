@@ -110,6 +110,7 @@ public class Entorno {
      * finds the position of the robot
      *
      * @param state State of the world to find the robot
+     * @return The point with the position of the robot
      */
     public Point findRobot(State state) {
 
@@ -325,7 +326,7 @@ public class Entorno {
 
     /**
      * Returns the size of the matrix of the world
-     * @return 
+     * @return The size of the matrix of the world
      */
     public int getSize() {
         return size;

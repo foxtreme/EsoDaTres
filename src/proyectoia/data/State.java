@@ -58,7 +58,7 @@ public class State {
 
     /**
      * Increments the quantity of goals achieved
-     * @param goalsAchieved 
+     * @param goalsAchieved goals gotten by the robot
      */
     public void setGoalsAchieved(int goalsAchieved) {
         this.goalsAchieved = this.goalsAchieved+ goalsAchieved;
@@ -99,7 +99,7 @@ public class State {
     
     /**
      * Removes an object from the world matrix and sets its value to 0
-     * @param item 
+     * @param item location of the object to be removed
      */
     public void removeItem(Point item){
         this.maze[item.x][item.y]=0;

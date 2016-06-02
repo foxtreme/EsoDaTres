@@ -31,6 +31,7 @@ public class Aestrella {
     
     /**
      * Constructor of this class
+     * @param fileMundo file containing the world to be tested
      */
     public Aestrella(File fileMundo) {
         environment = new Entorno();
@@ -79,7 +80,7 @@ public class Aestrella {
 
     /**
      * Sorts the frontier and puts in front the nodes with less heuristic so they are expanded first
-     * @param nodeList 
+     * @param nodeList List of nodes to be sorted by their heuristic
      */
     public void sort(List<Node> nodeList) {
         Collections.sort(nodeList, new Comparator<Node>() {

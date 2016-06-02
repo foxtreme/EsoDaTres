@@ -29,6 +29,7 @@ public class Avara {
     
     /**
      * Constructor of this class
+     * @param fileMundo file containing the world to be tested
      */
     public Avara(File fileMundo) {
         environment = new Entorno();
@@ -74,7 +75,7 @@ public class Avara {
 
     /**
      * Sorts the frontier and puts in front the nodes with less distance (cost is taken as distance here) so they are expanded first
-     * @param nodeList 
+     * @param nodeList List of nodes to be sorted by their heuristic (posing as cost here)
      */
     public void sort(List<Node> nodeList) {
         Collections.sort(nodeList, new Comparator<Node>() {
