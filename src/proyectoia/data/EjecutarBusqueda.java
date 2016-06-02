@@ -17,7 +17,7 @@ import proyectoia.front.Front;
  *
  * @author root
  */
-public class EjecutarBusqueda implements Runnable {
+public class EjecutarBusqueda extends Thread {
 
     List<Node> path;
     int[][] originalMap;
@@ -62,28 +62,13 @@ public class EjecutarBusqueda implements Runnable {
                 Front.miMundo.replace(index2, mb);
 
                 Front.setMundoPanel(Front.miMundo);
-
-                time = new Tiempo();
-                time.Contar();
-                //retardo segun retardoComboBox
-                while (time.getSegundos() <= 1) {
-
-                    //ciclo vacio que dura el tiempo seleccionado 
-                    if (time.getSegundos() >= 1) {
-                        continue;
-                    }
-
-                }//fin while 
-
-                time.cancelar();
-
-                try {
-                    Thread.currentThread().wait(20);
-                } catch (InterruptedException ie) {
-                    System.err.println("cause:" + ie.getCause());
+                try{
+                Thread.sleep(500);
+                }catch(InterruptedException ie){
+                    
                 }
                 
-                System.out.println(i);
+                Front.panelMundo.repaint();
             }
 
         } catch (Exception ex) {

@@ -458,15 +458,13 @@ public class Front extends javax.swing.JFrame {
 
     private void recorridoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recorridoButtonActionPerformed
         List<Node> path = fc.getpAmplitud().getSolution().getPathFromRoot();
-        
-        hiloAnimacion =new Thread(new EjecutarBusqueda(path, originalMap));
+        miMundo = fc.getMundo(originalMap);
+        setMundoPanel(miMundo);
+        hiloAnimacion =new EjecutarBusqueda(path, originalMap);
         hiloAnimacion.start();
         hiloAnimacion.setPriority(1);
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Front.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+               
         
         
     }//GEN-LAST:event_recorridoButtonActionPerformed
