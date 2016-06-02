@@ -48,7 +48,7 @@ public class Front extends javax.swing.JFrame {
         initComponents();
 
         //instancio controladores
-        labelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("../images/banner.png")));
+        labelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("../images/banner.jpg")));
         fc = new FrontController();//instancio el controlador
         buscando = true;//variable manipuladora del Boton Ejecutar - ejecutarJButton
         //infoLabel.setVisible(false);
@@ -310,7 +310,7 @@ public class Front extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(panelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
             .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(

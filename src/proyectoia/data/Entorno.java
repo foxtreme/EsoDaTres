@@ -124,24 +124,29 @@ public class Entorno {
      */
     public int findClosestGoal(State state) {
         int distanceFromGoal = 0;
+        Point locationItem1 = new Point();
+        Point locationItem2 = new Point();
         if (state.getGoalsAchieved() == 0) {//if no items have been found
-            int distanceItem1 = 0, distanceItem2 = 0;
+            int distanceItem1 = 0, distanceItem2 = 0, distance1from2=0;
             int count = 0;
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     if ((state.getMaze()[i][j] == 6) && (count == 0)) {//if found first item
-                        distanceItem1 = Math.abs(state.getPosition().x - i)+Math.abs(state.getPosition().y - j);//manhattan distance
+                        locationItem1.setLocation(i,j);
+                        distanceItem1 = Math.abs(state.getPosition().x - locationItem1.x)+Math.abs(state.getPosition().y - locationItem1.y);//manhattan distance
                         count++;
                     }
                     if ((state.getMaze()[i][j] == 6) && (count == 1)) {//if found second item
-                        distanceItem2 = Math.abs(state.getPosition().x - i)+Math.abs(state.getPosition().y - j);
+                        locationItem2.setLocation(i,j);
+                        distanceItem2 = Math.abs(locationItem2.x - state.getPosition().x)+Math.abs(locationItem2.y - state.getPosition().y);
+                        distance1from2 = Math.abs(locationItem2.x - locationItem1.x)+Math.abs(locationItem2.y - locationItem1.y);
                     }
                 }
             }
             if (distanceItem1 <= distanceItem2) {//gets the closest item
-                distanceFromGoal = distanceItem1;
+                distanceFromGoal = distanceItem1+distance1from2;
             } else {
-                distanceFromGoal = distanceItem2;
+                distanceFromGoal = distanceItem2+distance1from2;
             }
         }
         if (state.getGoalsAchieved() == 1) {//if an item has already been found
@@ -290,12 +295,7 @@ public class Entorno {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Entorno.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                System.out.print(matrix[i][j]);
-            }
-            System.out.println();
-        }
+        
         return matrix;
     }//fin getMundo
 
