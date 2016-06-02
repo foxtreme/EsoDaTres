@@ -59,11 +59,11 @@ public class Profundidad {
         if (neighbors[2] != 1) {
             operators.add(6);
         }//right       
-        
+
         if (neighbors[1] != 1) {
             operators.add(8);
         }//up
-        
+
         if (neighbors[3] != 1) {
             operators.add(5);
         }//down
@@ -82,7 +82,7 @@ public class Profundidad {
         //recover the status data of the parent
         Node child = null;
         Point nextPos = parent.applyOperator(operator, environment, parent.getState());
-        
+
         if (nextPos != null) {
             int[][] maze = new int[environment.getSize()][environment.getSize()];
             for (int i = 0; i < environment.getSize(); i++) {
@@ -98,15 +98,20 @@ public class Profundidad {
             state.setSuit(suit);
             //creates the child node with the calculated state        
             child = new Node(state, parent, operator, 1);
-            
+
         }
         //System.out.println("cycling?: "+child.isItGrandpa());
-        if(child.isItGrandpa()){
-           child=null; 
+        if (child.isItGrandpa()) {
+            child = null;
         }
         return child;
     }
 
+    /**
+     * Checks if a node is goal or not and takes items and the suit in case it finds them
+     * @param node to be checked
+     * @return true if this is the goal, false otherwise
+     */
     public boolean expand(Node node) {
 
         //gets the value of the cell where the robot is
@@ -115,12 +120,10 @@ public class Profundidad {
         if (value == 6) {
             node.getState().setGoalsAchieved(1);
             node.getState().removeItem(node.getState().getPosition());
-            System.out.println("found goal " + node.getState().getPosition().toString());
         }
         if (value == 3) {
             node.getState().setSuit(true);
             node.getState().removeItem(node.getState().getPosition());
-            System.out.println("found suit " + node.getState().getPosition().toString());
         }
         //check if this is a goal
         boolean goal = node.isItGoal(environment);
@@ -131,73 +134,95 @@ public class Profundidad {
 
     }
 
+    /**
+     * Search algorithm using depth first
+     */
     public void depthFirst() {
 
         long startTime = System.currentTimeMillis();
-        boolean end=false;
-        while (frontier.size()>0 && (!end)) {
+        boolean end = false;
+        while (frontier.size() > 0 && (!end)) {
             //if there are no more nodes to expand, end it
             Node node = frontier.remove(0);
             //add the node to the expanded list
             explored.add(node);
             //expand the node and tell if it's the goal
             end = expand(node);
-            System.out.println("depth: " + node.getDepth());
+            //System.out.println("depth: " + node.getDepth());
             if (!end) {//if node wasn't the goal
                 Vector<Integer> operators = generateOperators(node);
                 for (int i = 0; i < operators.size(); i++) {
                     Node child = childNode(node, operators.get(i));
                     //System.out.println("child to operator: "+);
                     if (child != null) {
-                        frontier.add(0, child);
+                        frontier.add(0, child);//adds the deepest to the front
                     }
                 }
 
             } else {
                 List<Node> path = solution.getPathFromRoot();
+                System.out.println("Path to Victory!");
                 for (int i = 0; i < path.size(); i++) {
                     Point pos = this.getEnvironment().findRobot(path.get(i).getState());
                     System.out.println((int) pos.getX() + ", " + (int) pos.getY());
                 }
                 System.out.println("Number of Expanded nodes: " + explored.size());
                 System.out.println("Depth of the tree: " + solution.getDepth());
-                
+                System.out.println("Found suit?: " + solution.getState().isSuit());
             }
         }
         long endTime = System.currentTimeMillis();
-        totalTime  = endTime - startTime;
+        totalTime = endTime - startTime;
     }
-    
 
-
-
-/**
- *
- * @return
- */
-public Node getRoot() {
+    /**
+     * Returns the root node 
+     * @return The root node
+     */
+    public Node getRoot() {
         return root;
     }
 
+    /**
+     * Returns the world of the problem
+     * @return World of the problem
+     */
     public Entorno getEnvironment() {
         return environment;
     }
 
+    /**
+     * Returns the possible nodes to be expanded
+     * @return List of nodes to be expanded
+     */
     public Vector<Node> getFrontier() {
         return frontier;
     }
 
+    /**
+     * returns the expanded nodes
+     * @return List of expanded nodes
+     */
     public Vector<Node> getExplored() {
         return explored;
     }
 
+    /**
+     * Returns the solution of the problem
+     * @return The solution node of the problem
+     */
     public Node getSolution() {
         return solution;
     }
 
+    /**
+     * Returns the running time of the search
+     * @return time of the search
+     */
     public long getTotalTime() {
         return totalTime;
     }
+    
     /*
     public static void main(String[] args) {
 
