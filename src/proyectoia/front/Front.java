@@ -13,12 +13,15 @@ import static java.lang.Math.sqrt;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import proyectoia.controllers.FrontController;
+import proyectoia.data.EjecutarBusqueda;
 import proyectoia.data.Node;
 
 /**
@@ -30,10 +33,11 @@ public class Front extends javax.swing.JFrame {
     /**
      * Creates new form Front
      */
-    FrontController fc;
+    public static FrontController fc;
     public boolean buscando;
-    Map miMundo;
-    int[][] originalMap;
+    public static Map miMundo;
+    public static int[][] originalMap;
+    Thread hiloAnimacion;
 
     //@SuppressWarnings("unchecked")
     public Front() {
@@ -454,38 +458,17 @@ public class Front extends javax.swing.JFrame {
 
     private void recorridoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recorridoButtonActionPerformed
         List<Node> path = fc.getpAmplitud().getSolution().getPathFromRoot();
-
-        for (int i = 0; i < path.size()-1; i++) {
-            Point pos = fc.getpAmplitud().getEnvironment().findRobot(path.get(i).getState());
-            Point pos2 = fc.getpAmplitud().getEnvironment().findRobot(path.get(i+1).getState());
-            String index1 = (int)pos.getX() + "" + (int) pos.getY();
-            String index2 = (int)pos2.getX() + "" + (int) pos2.getY();
-            
-            ImageIcon robot = new javax.swing.ImageIcon(getClass().getResource("../images/2.png"));
-            JLabel mb = new JLabel(robot);
-            ImageIcon original;
-            if(originalMap[(int)pos.getX()][(int)pos.getY()] == 3 || originalMap[(int)pos.getX()][(int)pos.getY()] == 6 || originalMap[(int)pos.getX()][(int)pos.getY()] == 2){
-                original = new javax.swing.ImageIcon(getClass().getResource("../images/0.png"));
-            }else{
-                original = new javax.swing.ImageIcon(getClass().getResource("../images/"+originalMap[(int)pos.getX()][(int)pos.getY()]+".png"));
-            }
-            
-            JLabel ol = new JLabel(original);
-            
-            mb.setSize(32, 32);
-            mb.setVisible(true);
-            mb.setToolTipText(index2);
-            
-            ol.setSize(32, 32);
-            ol.setVisible(true);
-            ol.setToolTipText(index1);
-            
-            miMundo.replace(index1,ol);
-            miMundo.replace(index2,mb);
-            
-            setMundoPanel(miMundo);
-            
+        
+        hiloAnimacion =new Thread(new EjecutarBusqueda(path, originalMap));
+        hiloAnimacion.start();
+        hiloAnimacion.setPriority(1);
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Front.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
     }//GEN-LAST:event_recorridoButtonActionPerformed
 
     /**
@@ -529,7 +512,7 @@ public class Front extends javax.swing.JFrame {
      *
      * @param miMundo
      */
-    public void setMundoPanel(Map miMundo) {
+    public static void setMundoPanel(Map miMundo) {
         int size = (int) sqrt(miMundo.size());
         panelMundo.setLayout(new GridLayout(size, size));
 
@@ -571,7 +554,7 @@ public class Front extends javax.swing.JFrame {
     private javax.swing.JTextField nodosExpandidos;
     private javax.swing.JPanel panelContent;
     private javax.swing.JPanel panelLogo;
-    private javax.swing.JPanel panelMundo;
+    public static javax.swing.JPanel panelMundo;
     private javax.swing.JTextField profundidad;
     private javax.swing.JButton recorridoButton;
     private javax.swing.JScrollPane scrollMundo;

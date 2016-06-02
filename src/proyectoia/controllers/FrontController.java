@@ -62,12 +62,10 @@ public class FrontController {
         aStar = new Aestrella(fileMundo);
         return aStar;
     }
-    
-    public void EjecutarBusqueda(){
-        new EjecutarBusqueda();
+    public Entorno getEntorno(){
+        return new Entorno();
     }
-    
-    
+       
     
     //getter and setters
 
