@@ -29,6 +29,7 @@ public class Avara {
     
     /**
      * Constructor of this class
+     * @param fileMundo file containing the world to be tested
      */
     public Avara(File fileMundo) {
         environment = new Entorno();
@@ -74,7 +75,7 @@ public class Avara {
 
     /**
      * Sorts the frontier and puts in front the nodes with less distance (cost is taken as distance here) so they are expanded first
-     * @param nodeList 
+     * @param nodeList List of nodes to be sorted by their heuristic (posing as cost here)
      */
     public void sort(List<Node> nodeList) {
         Collections.sort(nodeList, new Comparator<Node>() {
@@ -122,9 +123,9 @@ public class Avara {
     }
 
     /**
-     * Checks if a Node is goal or not, if it finds the suit it uses it
-     * @param node
-     * @return 
+     * Checks if a node is goal or not and takes items and the suit in case it finds them
+     * @param node to be checked
+     * @return true if this is the goal, false otherwise
      */
     public boolean expand(Node node) {
         //gets the value of the cell where the robot is
@@ -149,7 +150,7 @@ public class Avara {
     }
 
     /**
-     * Executes the greedy search
+     * Search algorithm using best first 
      */
     public void greedy() {
         long startTime = System.currentTimeMillis();
@@ -177,6 +178,7 @@ public class Avara {
                     }
                 } else {
                     List<Node> path = solution.getPathFromRoot();
+                    System.out.println("Path to Victory!");
                     for (int i = 0; i < path.size(); i++) {
                         Point pos = this.getEnvironment().findRobot(path.get(i).getState());
                         System.out.println((int) pos.getX() + ", " + (int) pos.getY());
@@ -194,29 +196,49 @@ public class Avara {
     }
 
     /**
-     *
-     * @return
+     * Returns the root node 
+     * @return The root node
      */
     public Node getRoot() {
         return root;
     }
 
+    /**
+     * Returns the world of the problem
+     * @return World of the problem
+     */
     public Entorno getEnvironment() {
         return environment;
     }
 
+    /**
+     * Returns the possible nodes to be expanded
+     * @return List of nodes to be expanded
+     */
     public List<Node> getFrontier() {
         return frontier;
     }
 
+    /**
+     * returns the expanded nodes
+     * @return List of expanded nodes
+     */
     public List<Node> getExplored() {
         return explored;
     }
 
+    /**
+     * Returns the solution of the problem
+     * @return The solution node of the problem
+     */
     public Node getSolution() {
         return solution;
     }
 
+    /**
+     * Returns the running time of the search
+     * @return time of the search
+     */
     public long getTotalTime() {
         return totalTime;
     }
