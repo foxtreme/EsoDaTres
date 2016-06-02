@@ -53,7 +53,7 @@ public class Front extends javax.swing.JFrame {
         //asigno un filtro de busquda de archivos al jFileChooser
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (*.txt)", "txt");
         cargarRutaMundoJFC.setFileFilter(filtro);
-        
+
         miMundo = new HashMap();
 
     }
@@ -324,7 +324,6 @@ public class Front extends javax.swing.JFrame {
     private void cargarRutaMundoJFCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarRutaMundoJFCActionPerformed
     cargarRutaMundoJFC = (JFileChooser) evt.getSource();
     String comando = evt.getActionCommand();
-    
 
     if (comando.equals(JFileChooser.APPROVE_SELECTION)) {
 
@@ -336,12 +335,12 @@ public class Front extends javax.swing.JFrame {
 
         //cargo el mundo inicial
         //creo el mundo y obtengo un Map con todos los label con el icono
-        
         originalMap = fc.getMundoMatrix(archivoSeleccionado);
         miMundo = fc.getMundo(originalMap);
 
         //cargo el mundo en el panel a partir del hash con los iconos indexados
         setMundoPanel(miMundo);
+        panelMundo.updateUI();
 
         //habilito el boton ejecutar
         ejecutarJButton.setEnabled(true);
@@ -457,16 +456,55 @@ public class Front extends javax.swing.JFrame {
     }//GEN-LAST:event_algoritmosJComboBoxActionPerformed
 
     private void recorridoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recorridoButtonActionPerformed
-        List<Node> path = fc.getpAmplitud().getSolution().getPathFromRoot();
+        List<Node> path;
         miMundo = fc.getMundo(originalMap);
         setMundoPanel(miMundo);
-        hiloAnimacion =new EjecutarBusqueda(path, originalMap);
-        hiloAnimacion.start();
-        hiloAnimacion.setPriority(1);
-        
-               
+        panelMundo.updateUI();
         
         
+        String index = algoritmosJComboBox.getSelectedItem().toString();
+        
+        switch (index) {
+            case "Amplitud":
+                path = fc.getpAmplitud().getSolution().getPathFromRoot();
+                hiloAnimacion = new EjecutarBusqueda(path, originalMap);
+                hiloAnimacion.start();
+                hiloAnimacion.setPriority(1);
+                
+                
+                break;
+            case "Costo Uniforme":
+                path = fc.getCosto().getSolution().getPathFromRoot();
+                hiloAnimacion = new EjecutarBusqueda(path, originalMap);
+                hiloAnimacion.start();
+                hiloAnimacion.setPriority(1);
+                break;
+            case "Profundidad":
+                path = fc.getProfundidad().getSolution().getPathFromRoot();
+                hiloAnimacion = new EjecutarBusqueda(path, originalMap);
+                hiloAnimacion.start();
+                hiloAnimacion.setPriority(1);
+                break;
+            case "Avara":
+                path = fc.getAvara().getSolution().getPathFromRoot();
+                hiloAnimacion = new EjecutarBusqueda(path, originalMap);
+                hiloAnimacion.start();
+                hiloAnimacion.setPriority(1);
+                break;
+            case "A*":
+                path = fc.getaStar().getSolution().getPathFromRoot();
+                hiloAnimacion = new EjecutarBusqueda(path, originalMap);
+                hiloAnimacion.start();
+                hiloAnimacion.setPriority(1);
+
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "No se ha seleccionado ningun algoritmo", "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        
+
+
     }//GEN-LAST:event_recorridoButtonActionPerformed
 
     /**

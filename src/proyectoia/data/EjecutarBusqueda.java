@@ -68,7 +68,7 @@ public class EjecutarBusqueda extends Thread {
                     
                 }
                 
-                Front.panelMundo.repaint();
+                Front.panelMundo.updateUI();
             }
 
         } catch (Exception ex) {
