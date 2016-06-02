@@ -47,7 +47,7 @@ public class Entorno {
     }
 
     /**
-     * Loads a text file
+     * Loads a text file from a file
      *
      * @param fileName String with the name of the file
      */
@@ -73,12 +73,12 @@ public class Entorno {
         }catch (FileNotFoundException ex) {
             Logger.getLogger(Entorno.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for(int i= 0; i<size;i++){
+        /*for(int i= 0; i<size;i++){
             for(int j= 0; j<size;j++){
                 System.out.print(matrix[i][j]+" ");
             }
             System.out.println();
-        }
+        }*/
     }
     
     /*public void loadFile(String fileName) {
@@ -109,7 +109,7 @@ public class Entorno {
     /**
      * finds the position of the robot
      *
-     * @param state State of the world in which to find the robot
+     * @param state State of the world to find the robot
      */
     public Point findRobot(State state) {
 
@@ -118,8 +118,8 @@ public class Entorno {
 
     /**
      * Gets the closest distance to a goal
-     * @param state
-     * @return 
+     * @param state of the world where the robot is
+     * @return the L distance of the robot to the closest goal
      */
     public int findClosestGoal(State state) {
         int distanceFromGoal = 0;
@@ -158,7 +158,7 @@ public class Entorno {
     /**
      * Sets the value of the 4 cells surrounding the robot
      *
-     * @param state State of the world to find the neighbors from
+     * @param state State of the world to find the neighbors
      */
     public void setNeighbors(State state) {
         Point currentPosition = findRobot(state);
@@ -261,17 +261,16 @@ public class Entorno {
      */
     public int[] getNeighbors(State state) {
         setNeighbors(state);
-        //System.out.println("left: "+neighbors[0]+" up: "+neighbors[1]+" right: "+neighbors[2]+" down: "+neighbors[3]);
         return neighbors;
     }
 
     
     /**
      * *
-     * Retorna extrae la matriz del archivo
+     * Returns the matrix from the file
      *
-     * @param mundoFile
-     * @return
+     * @param mundoFile matrix with the world
+     * @return matrix with the info of the world
      */
     public int[][] getMundo(File mundoFile) {
 
@@ -308,14 +307,26 @@ public class Entorno {
         return goalCount;
     }
 
+    /**
+     * Returns the initial state of the world
+     * @return Initial state of the world
+     */
     public State getInitialState() {
         return initialState;
     }
 
+    /**
+     * Returns the conventions used for the objects in the world
+     * @return Array of numbers representing each convention
+     */
     public int[] getConventions() {
         return conventions;
     }
 
+    /**
+     * Returns the size of the matrix of the world
+     * @return 
+     */
     public int getSize() {
         return size;
     }
