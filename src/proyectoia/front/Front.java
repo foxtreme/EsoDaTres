@@ -8,6 +8,8 @@ package proyectoia.front;
 import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import static java.lang.Math.sqrt;
 import java.util.HashMap;
@@ -19,8 +21,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import proyectoia.controllers.FrontController;
+import proyectoia.data.Animation;
 import proyectoia.data.EjecutarBusqueda;
 import proyectoia.data.Node;
 
@@ -456,46 +460,36 @@ public class Front extends javax.swing.JFrame {
     }//GEN-LAST:event_algoritmosJComboBoxActionPerformed
 
     private void recorridoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recorridoButtonActionPerformed
-        List<Node> path;
+        final List<Node> path;
         miMundo = fc.getMundo(originalMap);
         setMundoPanel(miMundo);
-        panelMundo.updateUI();
-        
+        panelMundo.updateUI();          
+
         
         String index = algoritmosJComboBox.getSelectedItem().toString();
         
         switch (index) {
             case "Amplitud":
                 path = fc.getpAmplitud().getSolution().getPathFromRoot();
-                hiloAnimacion = new EjecutarBusqueda(path, originalMap);
-                hiloAnimacion.start();
-                hiloAnimacion.setPriority(1);
                 
-                
+                new Animation(path, originalMap).ejecutarAnimation();
+                                            
                 break;
             case "Costo Uniforme":
                 path = fc.getCosto().getSolution().getPathFromRoot();
-                hiloAnimacion = new EjecutarBusqueda(path, originalMap);
-                hiloAnimacion.start();
-                hiloAnimacion.setPriority(1);
+                new Animation(path, originalMap).ejecutarAnimation();
                 break;
             case "Profundidad":
                 path = fc.getProfundidad().getSolution().getPathFromRoot();
-                hiloAnimacion = new EjecutarBusqueda(path, originalMap);
-                hiloAnimacion.start();
-                hiloAnimacion.setPriority(1);
+                new Animation(path, originalMap).ejecutarAnimation();
                 break;
             case "Avara":
                 path = fc.getAvara().getSolution().getPathFromRoot();
-                hiloAnimacion = new EjecutarBusqueda(path, originalMap);
-                hiloAnimacion.start();
-                hiloAnimacion.setPriority(1);
+                new Animation(path, originalMap).ejecutarAnimation();
                 break;
             case "A*":
                 path = fc.getaStar().getSolution().getPathFromRoot();
-                hiloAnimacion = new EjecutarBusqueda(path, originalMap);
-                hiloAnimacion.start();
-                hiloAnimacion.setPriority(1);
+                new Animation(path, originalMap).ejecutarAnimation();
 
                 break;
             default:
