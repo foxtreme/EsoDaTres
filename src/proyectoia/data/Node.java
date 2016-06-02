@@ -20,7 +20,7 @@ public class Node {
     private int operator;//4:left, 8:up, 6:right, 5:down
     private int depth;
     private int cost;
-    private int heuristic;
+    private int heuristic;//only used for aEstrella
 
     /**
      * Constructor of the Node class
@@ -57,7 +57,7 @@ public class Node {
     /**
      * Calls the corresponding directional movement
      *
-     * @param operator int corresponding to each of the 4 directions
+     * @param operator integer number corresponding to each of the 4 directions
      * @param environment world of the robot
      * @param state the state of the world for this node
      * @return the position where the robot will be next
@@ -88,7 +88,7 @@ public class Node {
     private Point moveLeft(Entorno environment, State state) {
         int neighbors[] = new int[4];
         Point movement = new Point();
-        neighbors = environment.getNeighbors(state);
+        neighbors = environment.getNeighbors(state);//gets all neighbors of the robot
         if (neighbors[0] != 1) {
             Point robot = environment.findRobot(state);
             int row = (int) robot.getX();
@@ -106,7 +106,7 @@ public class Node {
     private Point moveUp(Entorno environment, State state) {
         int neighbors[] = new int[4];
         Point movement = new Point();
-        neighbors = environment.getNeighbors(state);
+        neighbors = environment.getNeighbors(state);//gets all neighbors of the robot
         if (neighbors[1] != 1) {
             Point robot = environment.findRobot(state);
             int row = ((int) robot.getX()) - 1;
@@ -124,7 +124,7 @@ public class Node {
     private Point moveRight(Entorno environment, State state) {
         int neighbors[] = new int[4];
         Point movement = new Point();
-        neighbors = environment.getNeighbors(state);
+        neighbors = environment.getNeighbors(state);//gets all neighbors of the robot
         if (neighbors[2] != 1) {
             Point robot = environment.findRobot(state);
             int row = (int) robot.getX();
@@ -142,7 +142,7 @@ public class Node {
     private Point moveDown(Entorno environment, State state) {
         int neighbors[] = new int[4];
         Point movement = new Point();
-        neighbors = environment.getNeighbors(state);
+        neighbors = environment.getNeighbors(state);//gets all neighbors of the robot
         if (neighbors[3] != 1) {
             Point robot = environment.findRobot(state);
             int row = ((int) robot.getX()) + 1;
@@ -156,7 +156,7 @@ public class Node {
      * Verifies if all goals have been achieved
      *
      * @param environment world of the robot
-     * @return boolean whether it is or not a goal
+     * @return boolean whether it is a goal or not 
      */
     public boolean isItGoal(Entorno environment) {
         return (state.getGoalsAchieved() == environment.getGoalCount());
@@ -202,13 +202,11 @@ public class Node {
      */
     public boolean goingBack() {
         boolean grandpa = false;
-        
         if (getDepth()>1) {
             boolean goals = (getState().getGoalsAchieved() == getParent().getParent().getState().getGoalsAchieved());
             boolean suit = (getState().isSuit() == getParent().getParent().getState().isSuit());
             boolean robot = (getState().getPosition().equals(getParent().getParent().getState().getPosition()));
             grandpa = (goals && suit && robot);
-            System.out.println("grandpa?: "+grandpa);
         }
         return grandpa;
     }
@@ -216,7 +214,7 @@ public class Node {
     /**
      * Gets the path from the root to the solution nodes
      *
-     * @return
+     * @return the list of nodes from the root to this node
      */
     public List<Node> getPathFromRoot() {
         List<Node> path = new ArrayList<Node>();
@@ -269,43 +267,82 @@ public class Node {
         System.out.println("-------------------------");
     }
 
+    /**
+     * returns the parent of this node
+     * @return Parent of this node
+     */
     public Node getParent() {
         return parent;
     }
 
+    /**
+     * Returns the operator responsible of creating this node
+     * @return the operator used for this node
+     */
     public int getOperator() {
         return operator;
     }
 
+    /**
+     * Returns the depth of the node
+     * @return The depth of the node
+     */
     public int getDepth() {
         return depth;
     }
 
+    /**
+     * Returns the cost of getting to this node
+     * @return The cost of getting to this node
+     */
     public int getCost() {
         return cost;
     }
 
+    /**
+     * Returns the state of the node
+     * @return State of the node
+     */
     public State getState() {
         return state;
     }
 
+    /**
+     * Sets a state for the node
+     * @param state to be set
+     */
     public void setState(State state) {
         this.state = state;
     }
 
+    /**
+     * Sets a cost for the node
+     * @param cost to be set
+     */
     public void setCost(int cost) {
         this.cost = cost;
     }
 
+    /**
+     * Adds a cost to the node other than it already has
+     * @param cost to be added
+     */
     public void addCost(int cost) {
         this.cost = this.cost + cost;
     }
     
-    
+    /**
+     * Returns the heuristic associated to this node
+     * @return The heuristic
+     */
     public int getHeuristic() {
         return heuristic;
     }
 
+    /**
+     * Sets an heuristic for this node
+     * @param heuristic to be set
+     */
     public void setHeuristic(int heuristic) {
         this.heuristic = heuristic;
     }
