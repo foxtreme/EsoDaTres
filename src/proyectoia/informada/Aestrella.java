@@ -71,10 +71,7 @@ public class Aestrella {
         if (neighbors[3] != 1) {
             operators.add(5);
         }//down
-        for(int i=0; i<operators.size();i++){
-            System.out.print(operators.get(i)+" ");
-        }
-        
+                
         return operators;
     }
 

@@ -156,17 +156,17 @@ public class PreferentePorAmplitud {
                         }
 
                     }
-                    //System.out.println("cuantos nodos tiene frontier: "+frontier.size());
+                    
                 } else {
                     List<Node> path = solution.getPathFromRoot();
-//                    System.out.println("Path to Victory!");
-//                    for (int i = 0; i < path.size(); i++) {
-//                        Point pos = this.getEnvironment().findRobot(path.get(i).getState());
-//                       // System.out.println((int) pos.getX() + ", " + (int) pos.getY());
-//                    }
-//                    System.out.println("Number of Expanded nodes: " + explored.size());
-//                    System.out.println("Depth of the tree: " + solution.getDepth());
-//                    System.out.println("Found suit?: "+solution.getState().isSuit());
+                    System.out.println("Path to Victory!");
+                    for (int i = 0; i < path.size(); i++) {
+                        Point pos = this.getEnvironment().findRobot(path.get(i).getState());
+                        System.out.println((int) pos.getX() + ", " + (int) pos.getY());
+                    }
+                    System.out.println("Number of Expanded nodes: " + explored.size());
+                    System.out.println("Depth of the tree: " + solution.getDepth());
+                    System.out.println("Found suit?: "+solution.getState().isSuit());
                     loop = false;
                 }
             }
