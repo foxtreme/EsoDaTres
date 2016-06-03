@@ -139,6 +139,7 @@ public class Entorno {
                     if ((state.getMaze()[i][j] == 6) && (count == 1)) {//if found second item
                         locationItem2.setLocation(i,j);
                         distanceItem2 = Math.abs(locationItem2.x - state.getPosition().x)+Math.abs(locationItem2.y - state.getPosition().y);
+                        //gets the distance between items
                         distance1from2 = Math.abs(locationItem2.x - locationItem1.x)+Math.abs(locationItem2.y - locationItem1.y);
                     }
                 }
@@ -149,7 +150,7 @@ public class Entorno {
                 distanceFromGoal = distanceItem2+distance1from2;
             }
         }
-        if (state.getGoalsAchieved() == 1) {//if an item has already been found
+        if (state.getGoalsAchieved() == 1) {//if an item has already been found dont count the distance to the first item
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     if (state.getMaze()[i][j] == 6) {
