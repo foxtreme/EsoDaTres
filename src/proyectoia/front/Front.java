@@ -7,25 +7,17 @@ package proyectoia.front;
 
 import java.awt.Desktop;
 import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import static java.lang.Math.sqrt;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import proyectoia.controllers.FrontController;
 import proyectoia.data.Animation;
-import proyectoia.data.EjecutarBusqueda;
 import proyectoia.data.Node;
 
 /**
@@ -51,8 +43,8 @@ public class Front extends javax.swing.JFrame {
         labelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("../images/banner.jpg")));
         fc = new FrontController();//instancio el controlador
         buscando = true;//variable manipuladora del Boton Ejecutar - ejecutarJButton
-        //infoLabel.setVisible(false);
-        //recorridoButton.setVisible(false);
+        infoLabel.setVisible(false);
+        recorridoButton.setVisible(false);
 
         //asigno un filtro de busquda de archivos al jFileChooser
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (*.txt)", "txt");
@@ -117,22 +109,24 @@ public class Front extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("UNIVALLE Smart Robot");
         setBackground(new java.awt.Color(102, 102, 102));
-        setMinimumSize(new java.awt.Dimension(620, 600));
-        setPreferredSize(new java.awt.Dimension(620, 460));
+        setMinimumSize(new java.awt.Dimension(620, 515));
+        setPreferredSize(new java.awt.Dimension(620, 515));
 
         panelLogo.setPreferredSize(new java.awt.Dimension(0, 54));
 
+        labelLogo.setBackground(new java.awt.Color(51, 51, 51));
         labelLogo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelLogo.setBorder(new javax.swing.border.MatteBorder(null));
 
         javax.swing.GroupLayout panelLogoLayout = new javax.swing.GroupLayout(panelLogo);
         panelLogo.setLayout(panelLogoLayout);
         panelLogoLayout.setHorizontalGroup(
             panelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelLogo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelLogoLayout.setVerticalGroup(
             panelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+            .addComponent(labelLogo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
         );
 
         panelContent.setBackground(new java.awt.Color(102, 102, 102));
@@ -183,11 +177,11 @@ public class Front extends javax.swing.JFrame {
         panelMundo.setLayout(panelMundoLayout);
         panelMundoLayout.setHorizontalGroup(
             panelMundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 416, Short.MAX_VALUE)
+            .addGap(0, 463, Short.MAX_VALUE)
         );
         panelMundoLayout.setVerticalGroup(
             panelMundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 299, Short.MAX_VALUE)
+            .addGap(0, 356, Short.MAX_VALUE)
         );
 
         scrollMundo.setViewportView(panelMundo);
@@ -210,6 +204,7 @@ public class Front extends javax.swing.JFrame {
         infoLabel.setText("Búsqueda Exitosa!");
 
         recorridoButton.setText("Ver recorrido");
+        recorridoButton.setEnabled(false);
         recorridoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 recorridoButtonActionPerformed(evt);
@@ -224,7 +219,7 @@ public class Front extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelContentLayout.createSequentialGroup()
-                        .addComponent(scrollMundo, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                        .addComponent(scrollMundo, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator2)
@@ -234,12 +229,12 @@ public class Front extends javax.swing.JFrame {
                                         .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel2)
                                             .addComponent(jLabel1))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 15, Short.MAX_VALUE))
                                     .addGroup(panelContentLayout.createSequentialGroup()
                                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGap(5, 5, 5)))
                                 .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tiempoComputo, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                                    .addComponent(tiempoComputo, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
                                     .addComponent(profundidad)
                                     .addComponent(nodosExpandidos, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addComponent(jSeparator1)
@@ -280,7 +275,7 @@ public class Front extends javax.swing.JFrame {
                     .addComponent(ejecutarJButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollMundo)
+                    .addComponent(scrollMundo, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
                     .addGroup(panelContentLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -310,14 +305,14 @@ public class Front extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
+            .addComponent(panelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
             .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -395,12 +390,16 @@ public class Front extends javax.swing.JFrame {
             algoritmosJComboBox.addItem("Avara");
             algoritmosJComboBox.addItem("A*");
         }
+        
+        //cargar mapa original
+        miMundo = fc.getMundo(originalMap);
+        setMundoPanel(miMundo);
+        panelMundo.updateUI(); 
 
     }//GEN-LAST:event_busquedaJComboBoxActionPerformed
 
     private void ejecutarJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ejecutarJButtonActionPerformed
-        if (buscando) {
-            switch (algoritmosJComboBox.getSelectedItem().toString()) {
+        switch (algoritmosJComboBox.getSelectedItem().toString()) {
                 case "Amplitud":
 
                     fc.Amplitud(new File(jTextFieldRutaMundo.getText())).breadthFirst();
@@ -408,6 +407,7 @@ public class Front extends javax.swing.JFrame {
                     nodosExpandidos.setText("" + fc.getpAmplitud().getExplored().size());//nodos expandidos
                     profundidad.setText("" + fc.getpAmplitud().getSolution().getDepth());//profundidad
                     tiempoComputo.setText("" + fc.getpAmplitud().getTotalTime());//tiempo en milisegundos
+                    activarBotonRecorrido();
 
                     break;
                 case "Costo Uniforme":
@@ -415,6 +415,7 @@ public class Front extends javax.swing.JFrame {
                     nodosExpandidos.setText("" + fc.getCosto().getExplored().size());//nodos expandidos
                     profundidad.setText("" + fc.getCosto().getSolution().getDepth());//profundidad
                     tiempoComputo.setText("" + fc.getCosto().getTotalTime());//tiempo en milisegundos
+                    activarBotonRecorrido();
                     break;
                 case "Profundidad":
                     fc.Profundidad(new File(jTextFieldRutaMundo.getText())).depthFirst();
@@ -422,13 +423,20 @@ public class Front extends javax.swing.JFrame {
                     nodosExpandidos.setText("" + fc.getProfundidad().getExplored().size());//nodos expandidos
                     profundidad.setText("" + fc.getProfundidad().getSolution().getDepth());//profundidad
                     tiempoComputo.setText("" + fc.getProfundidad().getTotalTime());//tiempo en milisegundos
+                    activarBotonRecorrido();
                     break;
                 case "Avara":
+                    try{
                     fc.Avara(new File(jTextFieldRutaMundo.getText())).greedy();
 
                     nodosExpandidos.setText("" + fc.getAvara().getExplored().size());//nodos expandidos
                     profundidad.setText("" + fc.getAvara().getSolution().getDepth());//profundidad
                     tiempoComputo.setText("" + fc.getAvara().getTotalTime());//tiempo en milisegundos
+                    activarBotonRecorrido();
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(null, "No se encontro una Solución", "Información", JOptionPane.INFORMATION_MESSAGE);
+                        desactivarBotonRecorrido();
+                    }
 
                     break;
                 case "A*":
@@ -437,26 +445,32 @@ public class Front extends javax.swing.JFrame {
                     nodosExpandidos.setText("" + fc.getaStar().getExplored().size());//nodos expandidos
                     profundidad.setText("" + fc.getaStar().getSolution().getDepth());//profundidad
                     tiempoComputo.setText("" + fc.getaStar().getTotalTime());//tiempo en milisegundos
+                    activarBotonRecorrido();
 
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, "No se ha seleccionado ningun algoritmo", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    desactivarBotonRecorrido();
             }
-            buscando = false;
-            ejecutarJButton.setText("Detener");
-        } else if (!buscando) {
-            //detener la ejecucion 
-            buscando = true;
-            ejecutarJButton.setText("Buscar");
-        }
+        //cargar mapa original
+        miMundo = fc.getMundo(originalMap);
+        setMundoPanel(miMundo);
+        panelMundo.updateUI(); 
+            
     }//GEN-LAST:event_ejecutarJButtonActionPerformed
 
     private void algoritmosJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algoritmosJComboBoxActionPerformed
-        //settear campos
+        //settear campos      
 
         nodosExpandidos.setText("");//nodos expandidos
         profundidad.setText("");//profundidad
         tiempoComputo.setText("");//tiempo en milisegundos
+        desactivarBotonRecorrido();
+        
+        //cargar mapa original
+        miMundo = fc.getMundo(originalMap);
+        setMundoPanel(miMundo);
+        panelMundo.updateUI(); 
     }//GEN-LAST:event_algoritmosJComboBoxActionPerformed
 
     private void recorridoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recorridoButtonActionPerformed
@@ -563,6 +577,18 @@ public class Front extends javax.swing.JFrame {
         panelMundo.setVisible(true);
         panelMundo.repaint();
 
+    }
+    
+    public void activarBotonRecorrido(){
+        infoLabel.setVisible(true);
+        recorridoButton.setVisible(true);
+        recorridoButton.setEnabled(true);
+    }
+    
+    public void desactivarBotonRecorrido(){
+        infoLabel.setVisible(false);
+        recorridoButton.setVisible(false);
+        recorridoButton.setEnabled(false);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
