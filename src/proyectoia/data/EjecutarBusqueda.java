@@ -35,6 +35,7 @@ public class EjecutarBusqueda extends Thread {
 
             for (int i = 0; i < path.size() - 1; i++) {
                 Point pos = Front.fc.getEntorno().findRobot(path.get(i).getState());
+                System.out.print("");
                 Point pos2 = Front.fc.getEntorno().findRobot(path.get(i + 1).getState());
                 String index1 = (int) pos.getX() + "" + (int) pos.getY();
                 String index2 = (int) pos2.getX() + "" + (int) pos2.getY();

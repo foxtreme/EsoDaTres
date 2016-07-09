@@ -54,20 +54,24 @@ public class Profundidad {
     private Vector<Integer> generateOperators(Node node) {
         Vector<Integer> operators = new Vector<Integer>();
         int neighbors[] = environment.getNeighbors(node.getState());
-        if (neighbors[0] != 1) {
-            operators.add(4);
-        }//left
-        if (neighbors[2] != 1) {
-            operators.add(6);
-        }//right       
-
-        if (neighbors[1] != 1) {
-            operators.add(8);
-        }//up
-
+        
         if (neighbors[3] != 1) {
             operators.add(5);
         }//down
+        if (neighbors[2] != 1) {
+            operators.add(6);
+        }//right 
+        if (neighbors[1] != 1) {
+            operators.add(8);
+        }//up
+        if (neighbors[0] != 1) {
+            operators.add(4);
+        }//left
+              
+
+        
+
+        
         return operators;
     }
 
